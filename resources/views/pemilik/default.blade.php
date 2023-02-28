@@ -63,6 +63,7 @@
     <script src="{{ url('assets/js/dropzone.min.js') }}"></script>
     <script src="{{ url('assets/js/uppy.min.js') }}"></script>
     <script src="{{ url('assets/js/quill.min.js') }}"></script>
+    
     <script>
       $('.select2').select2(
       {
