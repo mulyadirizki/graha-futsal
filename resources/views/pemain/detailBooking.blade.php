@@ -110,36 +110,16 @@
                                         <div class="form-group row">
                                             <label for="staticEmail" class="col-sm-4 col-form-label">Jam Main :</label>
                                             <div class="form-group col-md-8">
-                                                <select id="jam_mulai" name="jam_mulai" class="form-control">
+                                                <select id="jam_mulai_{{ $item->id_lapangan }}" name="jam_mulai"  class="form-control">
                                                     <option disabled selected>Jam Mulai</option>
-                                                    <option value="01:00:00">01:00</option>
-                                                    <option value="02:00:00">02:00</option>
-                                                    <option value="03:00:00">03:00</option>
-                                                    <option value="04:00:00">04:00</option>
-                                                    <option value="05:00:00">05:00</option>
-                                                    <option value="06:00:00">06:00</option>
-                                                    <option value="07:00:00">07:00</option>
-                                                    <option value="08:00:00">08:00</option>
-                                                    <option value="09:00:00">09:00</option>
-                                                    <option value="10:00:00">10:00</option>
-                                                    <option value="11:00:00">11:00</option>
+                                                   
                                                 </select>
                                             </div>
                                             <label for="staticEmail" class="col-sm-4 col-form-label">Jam Berakhir :</label>
                                             <div class="form-group col-md-8">
-                                                <select id="jam_berakhir" name="jam_berakhir" class="form-control">
+                                                <select id="jam_berakhir_{{ $item->id_lapangan }}" name="jam_berakhir" class="form-control">
                                                     <option>Jam Berakhir</option>
-                                                    <option value="02:00:00">02:00</option>
-                                                    <option value="03:00:00">03:00</option>
-                                                    <option value="04:00:00">04:00</option>
-                                                    <option value="05:00:00">05:00</option>
-                                                    <option value="06:00:00">06:00</option>
-                                                    <option value="07:00:00">07:00</option>
-                                                    <option value="08:00:00">08:00</option>
-                                                    <option value="09:00:00">09:00</option>
-                                                    <option value="10:00:00">10:00</option>
-                                                    <option value="11:00:00">11:00</option>
-                                                    <option value="12:00:00">12:00</option>
+                                                    
                                                 </select>
                                             </div>
                                             <!-- <div>
@@ -165,6 +145,7 @@
 @endsection
 
 @push('script')
+<script src="{{ asset('assets/js/booking.js') }}"></script>
 <script>
     $( function() {
         $('#datepicker').datepicker({
@@ -179,25 +160,24 @@
             dayNamesMin: ['Min', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
         });
 
-        $('#datepicker').datepicker().on('changeDate', function (e) {
-            $.get('/api/booking/getTimeFree?tgl_booking='+e.date.toLocaleDateString('zh-Hans-CN'), function(data){
-                var obj = data.data;
-                var arr = Object.keys(obj).map(function (key) {
-                    console.log(obj[key]);
-                    return obj[key];
-                })
+        // $('#datepicker').datepicker().on('changeDate', function (e) {
+        //     $.get('/api/booking/getTimeFree?tgl_booking='+e.date.toLocaleDateString('zh-Hans-CN'), function(data){
+        //         var obj = data.data;
+        //         var arr = Object.keys(obj).map(function (key) {
+        //             console.log(obj[key]);
+        //             return obj[key];
+        //         })
 
-                $(`#jam_berakhir option`).toArray().map((e) => {
-                    const values = e.value;
-                    arr.map((m) => {
-                        if(values === m.jam_mulai) {
-                            $("#jam_berakhir").find('[value="'+m.jam_mulai+'"]').remove();
-                        }
-                    });
-                    console.log(values);
-                });
-            });
-        });
+        //         $(`#jam_berakhir option`).toArray().map((e) => {
+        //             const values = e.value;
+        //             arr.map((m) => {
+        //                 if(values === m.jam_mulai) {
+        //                     $("#jam_berakhir").find('[value="'+m.jam_mulai+'"]').remove();
+        //                 }
+        //             });
+        //         });
+        //     });
+        // });
     });
 </script>
 @endpush
