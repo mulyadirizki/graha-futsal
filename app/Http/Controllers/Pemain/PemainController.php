@@ -25,17 +25,26 @@ class PemainController extends Controller
     public function checkSchedule(Request $request)
     {
         $start = microtime(true);
-        $id_lapangan = $request->post('id_lapangan');
         $tgl_booking = $request->post('tgl_booking');
-        $get_data_booking = Booking::select('jam_mulai', 'jam_berakhir')->where('id_lapangan', $id_lapangan)->where('tgl_booking', $tgl_booking)->get();
-        $mulai = $this->count_time('mulai', $get_data_booking);
-        $selesai = $this->count_time('selesai', $get_data_booking);
+        $lapangan = Lapangan::select('id_lapangan')->get();
+        $schedule = [];
+        if ($lapangan) {
+            foreach ($lapangan as $key => $value) {
+                $get_data_booking = Booking::select('jam_mulai', 'jam_berakhir')->where('id_lapangan', $value->id_lapangan)->where('tgl_booking', $tgl_booking)->get();
+                $mulai = $this->count_time('mulai', $get_data_booking);
+                $selesai = $this->count_time('selesai', $get_data_booking);
+                $schedule[] = [
+                    'id_lapangan' => $value->id_lapangan,
+                    'time' => [
+                        'mulai' => $mulai['time_ready'],
+                        'selesai' => $selesai['time_ready'],
+                    ],
+                ];
+            }
+        }
         $data = [
             'status' => 'success',
-            'time' => [
-                'mulai' => $mulai['time_ready'],
-                'selesai' => $selesai['time_ready'],
-            ],
+            'schedule' => $schedule,
             'elapsed_time' => microtime(true) - $start,
         ];
         return response()->json($data, 200);
@@ -83,6 +92,7 @@ class PemainController extends Controller
             ->select('t_fasilitas.dsc_fasilitas', 'm_lapangan.*',
                 (DB::raw('(CASE WHEN m_lapangan.status_lapangan = 1 THEN "Ready" WHEN m_lapangan.status_lapangan = 2 THEN "Perbaikan" ELSE "-" END) as status_lap')))
             ->get();
+        // return response($data);exit;
         return view('pemain.detailBooking', compact('data'));
     }
 
