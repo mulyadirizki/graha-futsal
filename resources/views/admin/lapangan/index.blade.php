@@ -27,7 +27,6 @@
                                     <a href="{{ route('lapanganCreatePage') }}">
                                       <button class="btn btn-primary float-right ml-3" type="button">Add Lapangan +</button>
                                     </a>
-                                    <button class="btn btn-primary float-right ml-3" type="button">Export</button>
                                   </div>
                                 </div>
                               </div>
@@ -85,17 +84,29 @@
     <!-- .container-fluid -->
 @endsection
 @push('script')
-    <script src="{{ url('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ url('assets/js/dataTables.bootstrap4.min.js') }}"></script>
+    <!-- <script src="{{ url('assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url('assets/js/dataTables.bootstrap4.min.js') }}"></script> -->
     <script>
-      $('#dataTable-1').DataTable(
-      {
-        autoWidth: true,
-        "lengthMenu": [
-          [16, 32, 64, -1],
-          [16, 32, 64, "All"]
-        ]
-      });
+      $(document).ready(function() {
+          $('#dataTable-1').DataTable( {
+              dom: 'Bfrtip',
+              buttons: [
+                  'copy', 'csv', 'excel', 'pdf', 'print'
+              ],
+              "lengthMenu": [
+                [16, 32, 64, -1],
+                [16, 32, 64, "All"]
+              ],
+              scrollX:        true,
+              scrollCollapse: true,
+              autoWidth:         true,
+              paging:         true,
+              columnDefs: [
+                { "width": "200px", "targets": [1] },
+                { "width": "100px", "targets": [2, 3, 4, 5, 8] }
+              ]
+          } );
+      } );
       //message with toastr
       @if(session()->has('success'))
 

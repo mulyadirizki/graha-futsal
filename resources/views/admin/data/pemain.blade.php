@@ -189,16 +189,31 @@
         </div>
 @endsection
 @push('script')
-    <script src="{{ url('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ url('assets/js/dataTables.bootstrap4.min.js') }}"></script>
+    <!-- <script src="{{ url('assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url('assets/js/dataTables.bootstrap4.min.js') }}"></script> -->
     <script>
-      $('#dataTable-1').DataTable(
-      {
-        autoWidth: true,
-        "lengthMenu": [
-          [16, 32, 64, -1],
-          [16, 32, 64, "All"]
-        ]
-      });
+      // $('#dataTable-1').DataTable(
+      // {
+      //   autoWidth: true,
+      //   "lengthMenu": [
+      //     [16, 32, 64, -1],
+      //     [16, 32, 64, "All"]
+      //   ],
+      //   buttons: [
+      //       'copy', 'csv', 'excel', 'pdf', 'print'
+      //   ]
+      // });
+      $(document).ready(function() {
+          $('#dataTable-1').DataTable( {
+              dom: 'Bfrtip',
+              buttons: [
+                  'copy', 'csv', 'excel', 'pdf', 'print'
+              ],
+              "lengthMenu": [
+                [16, 32, 64, -1],
+                [16, 32, 64, "All"]
+              ],
+          } );
+      } );
     </script>
 @endpush
