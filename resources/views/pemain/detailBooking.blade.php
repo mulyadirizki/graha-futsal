@@ -106,29 +106,24 @@
 									</div>
 								</div>
                                 <div class="col-md-5">
-                                    <form class="row contact_form" action="" method="post" id="contactForm" novalidate="novalidate">
+                                    <form class="row contact_form" method="post" id="contactForm" novalidate="novalidate">
                                         <div class="form-group row">
                                             <label for="staticEmail" class="col-sm-4 col-form-label">Jam Main :</label>
                                             <div class="form-group col-md-8">
                                                 <select id="jam_mulai_{{ $item->id_lapangan }}" name="jam_mulai"  class="form-control">
                                                     <option disabled selected>Jam Mulai</option>
-                                                   
+
                                                 </select>
                                             </div>
                                             <label for="staticEmail" class="col-sm-4 col-form-label">Jam Berakhir :</label>
                                             <div class="form-group col-md-8">
                                                 <select id="jam_berakhir_{{ $item->id_lapangan }}" name="jam_berakhir" class="form-control">
                                                     <option>Jam Berakhir</option>
-                                                    
+
                                                 </select>
                                             </div>
-                                            <!-- <div>
-                                                <input type="text" value="" id="text">
-                                            </div> -->
                                             <div class="col-md-12 text-right">
-                                                <!-- <a href="{{ route('pemainBookingDate', $item->id_lapangan) }}"> -->
-                                                <button type="submit" value="submit" class="btn btn-submit primary-btn">Booking Sekarang</button>
-                                                <!-- </a> -->
+                                                <button type="button" onclick="addbooking('{{$item->id_lapangan}}')" class="btn primary-btn">Booking Sekarang</button>
                                             </div>
                                         </div>
                                     </form>
@@ -159,25 +154,6 @@
 		    todayHighlight: true,
             dayNamesMin: ['Min', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
         });
-
-        // $('#datepicker').datepicker().on('changeDate', function (e) {
-        //     $.get('/api/booking/getTimeFree?tgl_booking='+e.date.toLocaleDateString('zh-Hans-CN'), function(data){
-        //         var obj = data.data;
-        //         var arr = Object.keys(obj).map(function (key) {
-        //             console.log(obj[key]);
-        //             return obj[key];
-        //         })
-
-        //         $(`#jam_berakhir option`).toArray().map((e) => {
-        //             const values = e.value;
-        //             arr.map((m) => {
-        //                 if(values === m.jam_mulai) {
-        //                     $("#jam_berakhir").find('[value="'+m.jam_mulai+'"]').remove();
-        //                 }
-        //             });
-        //         });
-        //     });
-        // });
     });
 </script>
 @endpush

@@ -6,8 +6,9 @@ $(document).ready(function () {
 
 $('#datepicker').datepicker().on('changeDate', function (e) {
     let mydate=convert(e.date);
-    check_schedule(mydate)
+    check_schedule(mydate);
 });
+
 function convert(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -41,10 +42,36 @@ function check_schedule(date) {
                      $("#jam_mulai_"+value.id_lapangan).html(`<option disabled selected>Jam Mulai</option>${start}`);
                      $("#jam_berakhir_"+value.id_lapangan).html(`<option disabled selected>Jam Berakhir</option>${finish}`);
                 });
-                
+
             }
         },error:function(){
             console.warn('something wrong');
         }
     });
- }
+}
+
+function addbooking(id_lapangan) {
+    var date = $('#datepicker').datepicker('getDate'),
+        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+
+    let idLapangan = id_lapangan;
+    var tgl_booking = [date.getFullYear(), mnth, day].join("-");
+    let jam_mulai = $('select[name=jam_mulai] option').filter(':selected').val();
+    let jam_berakhir = $('select[name=jam_berakhir] option').filter(':selected').val();
+
+    $.ajax({
+        url: url+"/api/booking/create",
+        type: "POST",
+        data: {
+            id_lapangan: idLapangan,
+            tgl_booking: tgl_booking,
+            jam_mulai: jam_mulai,
+            jam_berakhir: jam_berakhir
+        },
+        dataType: 'JSON',
+        success:function(hasil) {
+            alert(hasil);
+        }
+    });
+}
