@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Jobs\SendEmailJob;
+use App\Models\Booking;
 
 class PePembayaranController extends Controller
 {
@@ -53,6 +54,7 @@ class PePembayaranController extends Controller
         $id_transaksi = $this->idCreate('t_transaksi', 'id_transaksi');
         $image = $this->uploadImage($request, $path = 'public/img/pembayaran/');
         $tgl_transaksi = Carbon::now();
+
         $save = Pembayaran::create([
             'id_transaksi'      => $id_transaksi,
             'id_tuser'          => $request->id_tuser,

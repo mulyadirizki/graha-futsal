@@ -96,7 +96,7 @@
 				<div class="col-md-12">
 					<div class="login_form_inner">
 						<h3>Log in to enter</h3>
-						<form action="{{ route('login') }}" method="POST" class="row login_form" id="contactForm" novalidate="novalidate">
+						<form action="{{ route('loginStore') }}" method="POST" class="row login_form" id="contactForm" novalidate="novalidate">
               @csrf
 							<div class="col-md-12 form-group">
 								<input type="text" class="form-control" id="username" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">

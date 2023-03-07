@@ -105,7 +105,7 @@ class PemainController extends Controller
 
     public function pemainPembayaranBooking()
     {
-        $pembayaran = Booking::select('m_booking.*', 'm_lapangan.dsc_lapangan')
+        $pembayaran = Booking::select('m_booking.*', 't_transaksi.id_transaksi', 'm_lapangan.dsc_lapangan')
             ->leftJoin('m_lapangan', 'm_booking.id_lapangan', '=', 'm_lapangan.id_lapangan')
             ->leftJoin('t_transaksi', 't_transaksi.id_booking', '=', 'm_booking.id_booking')
             ->where('m_booking.id_tuser', Auth::user()->id_tuser)

@@ -37,7 +37,7 @@ Auth::routes();
 Route::get('/daftar', [AuthController::class, 'registerPage'])->name('register');
 Route::post('daftar', [AuthController::class, 'registerStore'])->name('daftar');
 Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
-Route::post('login', [AuthController::class, 'loginStore'])->name('login');
+Route::post('login', [AuthController::class, 'loginStore'])->name('loginStore');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['prefix' => 'pemilik', 'middleware' => 'isPemilik'], function() {

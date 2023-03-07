@@ -40,6 +40,7 @@
                                 <th scope="col">Tgl Booking</th>
                                 <th scope="col">Jam Mulai</th>
                                 <th scope="col">Jam Berakhir</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -67,7 +68,18 @@
                                         <h5>{{ substr($value->jam_berakhir, 0, 5) }} WIB</h5>
                                     </td>
                                     <td>
-                                        <a href="{{ route('pemainPembayaranKonfirmasi', $value->id_booking) }}">Bayar</a>
+                                        <?php if(empty($value->id_transaksi)) { ?>
+                                            <h5>Belum Bayar</h5>
+                                        <?php } else { ?>
+                                            <h5>Sudah Bayar</h5>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if(empty($value->id_transaksi)) { ?>
+                                            <a href="{{ route('pemainPembayaranKonfirmasi', $value->id_booking) }}"><button class="btn btn-sm btn-primary">Bayar</button></a>
+                                        <?php } else { ?>
+                                            <button class="btn btn-sm btn-primary" disabled>Bayar</button>
+                                        <?php } ?>
                                     </td>
                                 </tr>
                                 <?php } ?>
