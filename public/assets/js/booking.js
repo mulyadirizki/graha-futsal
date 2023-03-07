@@ -54,7 +54,8 @@ function addbooking(id_lapangan) {
     var date = $('#datepicker').datepicker('getDate'),
         mnth = ("0" + (date.getMonth() + 1)).slice(-2),
         day = ("0" + date.getDate()).slice(-2);
-
+    
+    let id_tuser = $('#id_tuser').val();
     let idLapangan = id_lapangan;
     var tgl_booking = [date.getFullYear(), mnth, day].join("-");
     let jam_mulai = $('select[name=jam_mulai] option').filter(':selected').val();
@@ -64,6 +65,7 @@ function addbooking(id_lapangan) {
         url: url+"/api/booking/create",
         type: "POST",
         data: {
+            id_tuser: id_tuser,
             id_lapangan: idLapangan,
             tgl_booking: tgl_booking,
             jam_mulai: jam_mulai,
@@ -71,7 +73,13 @@ function addbooking(id_lapangan) {
         },
         dataType: 'JSON',
         success:function(hasil) {
-            alert(hasil);
+            Swal.fire({
+                icon: 'success',
+                title: 'Booking Lapangan Berhasil, Silahkan lakukan pembayaran',
+                timer: 1500
+            });
+
+            window.location.replace('{{route("pemainPembayaranBooking"}}');
         }
     });
 }

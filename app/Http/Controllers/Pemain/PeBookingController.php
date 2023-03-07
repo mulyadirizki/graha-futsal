@@ -62,10 +62,11 @@ class PeBookingController extends Controller
         $harga_lapangan = Lapangan::where('id_lapangan', $request->id_lapangan)->first();
 
         $totalDuration = ($endTime->diff($startTime)->format('%H')) * $harga_lapangan->harga_lapangan;
+        $user = Auth::user();
 
         $save = Booking::create([
             'id_booking'    => $id_booking,
-            'id_tuser'      => Auth::user()->id_tuser,
+            'id_tuser'      => $request->id_tuser,
             'id_lapangan'   => $request->id_lapangan,
             'tgl_booking'   => $request->tgl_booking,
             'jam_mulai'     => $request->jam_mulai,

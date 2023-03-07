@@ -16,10 +16,10 @@
 						<ul class="nav navbar-nav menu_nav ml-auto">
 							<li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
 							<li class="nav-item">
-								<a href="{{ route('pemainBooking') }}" class="nav-link">Booking</a>
+								<a href="{{ route('pemainBookingDetail') }}" class="nav-link">Booking</a>
 							</li>
 							<li class="nav-item">
-								<a href="{{ route('pemainPembayaran') }}" class="nav-link">Pembayaran</a>
+								<a href="{{ route('pemainPembayaranBooking') }}" class="nav-link">Pembayaran</a>
 							</li>
 							<li class="nav-item submenu dropdown">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"

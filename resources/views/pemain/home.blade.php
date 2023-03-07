@@ -44,7 +44,7 @@
                                     <h1>Graha Futsal</h1>
 									<p>Untuk kemudahan pemesanan lapangan silahkan klik booking sekarang, untuk melihat ketersediaan lapangan silahkan klik Cek Jadwal.</p>
 									<div class="add-bag d-flex align-items-center">
-										<a href="{{ route('pemainBooking') }}" class="btn btn-sm primary-btn">Booking Sekarang</a>
+										<a href="{{ route('pemainBookingDetail') }}" class="btn btn-sm primary-btn">Booking Sekarang</a>
 										<span class="add-text text-uppercase">Cek Jadwal</span>
 									</div>
 								</div>

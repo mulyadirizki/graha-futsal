@@ -14,6 +14,7 @@ use App\http\Controllers\Pemain\PemainController;
 // Controller Pemain
 use App\http\Controllers\Pemilik\PemilikController;
 use App\Http\Controllers\Pemain\PeBookingController;
+use App\Http\Controllers\Pemain\PePembayaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,10 +75,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'isAdmin'], function() {
 Route::group(['prefix' => 'id/u/pemain', 'middleware' => 'isPemain'], function() {
     Route::get('/', [PemainController::class, 'pemainPage'])->name('pemain');
 
-    Route::get('/booking', [PemainController::class, 'pemainBooking'])->name('pemainBooking');
-    Route::get('/booking/detail', [PemainController::class, 'pemainBookingDetail'])->name('pemainBookingDetail');
+    Route::get('/booking', [PemainController::class, 'pemainBookingDetail'])->name('pemainBookingDetail');
     Route::get('/booking/store/{id_lapangan}', [PemainController::class, 'pemainBookingDate'])->name('pemainBookingDate');
     Route::post('/booking/create', [PeBookingController::class, 'bookingAdd'])->name('bookingAdd');
 
-    Route::get('/pembayaran', [PemainController::class, 'pemainPembayaran'])->name('pemainPembayaran');
+    Route::get('/pembayaran', [PemainController::class, 'pemainPembayaranBooking'])->name('pemainPembayaranBooking');
+    Route::get('/pembayaran-konfirmasi/{id_booking}', [PemainController::class, 'pemainPembayaranKonfirmasi'])->name('pemainPembayaranKonfirmasi');
+    Route::post('/pembayaran/create', [PePembayaranController::class, 'pembayarangAdd'])->name('pembayarangAdd');
 });

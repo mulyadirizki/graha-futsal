@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Fasilitas;
 use App\Models\Lapangan;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class PemainController extends Controller
 {
@@ -93,7 +95,7 @@ class PemainController extends Controller
                 (DB::raw('(CASE WHEN m_lapangan.status_lapangan = 1 THEN "Ready" WHEN m_lapangan.status_lapangan = 2 THEN "Perbaikan" ELSE "-" END) as status_lap')))
             ->get();
         // return response($data);exit;
-        return view('pemain.detailBooking', compact('data'));
+        return view('pemain.booking', compact('data'));
     }
 
     public function pemainBookingDate()
@@ -101,8 +103,24 @@ class PemainController extends Controller
         return view('pemain.bookingDate');
     }
 
-    public function pemainPembayaran()
+    public function pemainPembayaranBooking()
     {
-        return view('pemain.pembayaran');
+        $pembayaran = Booking::select('m_booking.*', 'm_lapangan.dsc_lapangan')
+            ->leftJoin('m_lapangan', 'm_booking.id_lapangan', '=', 'm_lapangan.id_lapangan')
+            ->leftJoin('t_transaksi', 't_transaksi.id_booking', '=', 'm_booking.id_booking')
+            ->where('m_booking.id_tuser', Auth::user()->id_tuser)
+            ->get();
+        return view('pemain.pembayaran.index', compact('pembayaran'));
+    }
+
+    public function pemainPembayaranKonfirmasi($id_booking)
+    {
+        $dataBooking = Booking::select('m_booking.id_booking', 'm_booking.id_tuser', 'm_lapangan.dsc_lapangan', 'm_lapangan.tipe_lapangan', 'm_booking.tgl_booking',
+                'm_booking.jam_mulai', 'm_booking.jam_berakhir', (DB::raw('TIMEDIFF(m_booking.jam_berakhir, m_booking.jam_mulai) as lama_main')), 'm_lapangan.harga_lapangan', 'm_booking.total_biaya')
+            ->leftJoin('m_lapangan', 'm_booking.id_lapangan', '=', 'm_lapangan.id_lapangan')
+            ->where('m_booking.id_booking', $id_booking)
+            ->first();
+        $dataRekening = Transaksi::select('m_transaksi.*')->first();
+        return view('pemain.pembayaran.konfirmasiPembayaran', compact('dataBooking', 'dataRekening'));
     }
 }

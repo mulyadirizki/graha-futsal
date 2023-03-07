@@ -11,68 +11,150 @@
 <title>Booking | Futsal</title>
 @endpush
 
-@push('css')
-<link rel="stylesheet" href="{{ url('assets/front/css/bootstrap.css') }}">
-@endpush
-@push('script')
-    <script src="{{ asset('assets/js/booking.js') }}"></script>
-@endpush
 @section('content')
-	<!--================Login Box Area =================-->
-	<section class="login_box_area section_gap">
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
 		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="login_form_inner">
-						<h3>Booking</h3>
-						<form action="{{ route('bookingAdd') }}" method="POST" class="row login_form" id="contactForm" novalidate="novalidate">
-                        @csrf
-                            <div class="form-group row">
-                                <label for="staticEmail" class="col-sm-4 col-form-label">Lapangan</label>
-                                <div class="col-lg-8 form-group">
-                                    <select name="id_lapangan" id="id_lapangan" class="form-control">
-                                        <option disabled selected>Pilih Lapangan</option>
-                                        @foreach($lapangan as $l)
-                                            <option value="{{ $l->id_lapangan }}">{{ $l->dsc_lapangan }}</option>
-                                        @endforeach
-                                    </select>
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Graha Futsal</h1>
+					<nav class="d-flex align-items-center">
+						<a href="">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="#">Booking<span class="lnr lnr-arrow-right"></span></a>
+						<a href="">Lapangan</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Single Product Area =================-->
+	<div class="product_image_area">
+		<div class="container">
+			<div class="row s_product_inner">
+				<div class="col-lg-8 offset-lg-1">
+					<div class="s_product_text">
+						<h1>Graha Futsal</h1>
+						<h2>Kec. Banuhampu, Kabupaten Agam, Sumatera Barat</h2>
+						<ul class="list">
+                        <img src="{{ url('assets/front/img/football.png') }}" alt="" height="16" width="16" style="margin-right: 4px;"> Futsal
+						</ul>
+						<p>Lapangan Futsal. Lokasi Jl. By Pass, Taluak Ampek Suku, Kec. Banuhampu, Kabupaten Agam, Sumatera Barat 26181</p>
+						<div class="product_count">
+                            <h3>Fasilitas</h3>
+						</div>
+                        <div class="product-info row">
+                            <div class="col-lg-4">
+                                <div class="info_item">
+                                    <i class="lnr lnr-home"></i>
+                                    <p>Toilet</p>
                                 </div>
-                                <label for="staticEmail" class="col-sm-4 col-form-label">Tgl Booking</label>
-                                <div class="col-md-8 form-group">
-                                    <input type="date" class="form-control" id="tgl_booking" name="tgl_booking" placeholder="Tgl Booking" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Tgl Booking'">
-                                </div>
-                                <label for="staticEmail" class="col-sm-4 col-form-label">Jam Mulai</label>
-                                <div class="col-md-8 form-group">
-                                    <select id="jam_mulai" name="jam_mulai" class="form-control">
-                                       
-                                    </select>
-                                </div>
-                                <label for="staticEmail" class="col-sm-4 col-form-label">Jam Berakhir</label>
-                                <div class="col-md-8 form-group">
-                                    <select id="jam_berakhir" name="jam_berakhir" class="form-control">
-                                       
-                                    </select>
-                                </div>
-                                <label for="staticEmail" class="col-sm-4 col-form-label">Harga Lapangan</label>
-                                <div class="col-md-8 form-group">
-                                    @foreach($lapangan as $l)
-                                    <input type="text" class="form-control" disabled value="{{ $l->harga_lapangan }}" placeholder="Harga Lapangan" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Harga Lapangan'">
-                                    @endforeach
+                                <div class="info_item">
+                                    <i class="lnr lnr-phone-handset"></i>
+                                    <p>Bola</p>
                                 </div>
                             </div>
-                            <input type="hidden" name="roles" id="roles" value="3">
-							<div class="col-md-6 form-group">
-								<button type="submit" value="submit" class="primary-btn">Booking</button>
+                            <div class="col-lg-4">
+                                <div class="info_item">
+                                    <i class="lnr lnr-home"></i>
+                                    <p>Rompi</p>
+                                </div>
+                                <div class="info_item">
+                                    <i class="lnr lnr-phone-handset"></i>
+                                    <p>Parkir Motor & Mobil</p>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--================End Single Product Area =================-->
+
+	<!--================Product Description Area =================-->
+	<section class="product_description_area offset-lg-1">
+		<div class="container">
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review"
+					 aria-selected="false">Pilih Lapangan</a>
+				</li>
+			</ul>
+            <div class="col-6">
+                <div id="datepicker"></div>
+            </div>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
+					<div class="row">
+						<div class="col-lg-12">
+                            @foreach($data as $item)
+							<div class="row total_rate">
+								<div class="col-md-4 col-4">
+                                    <img src="https://api.ayo.co.id/image/venue-field/165839009833230.image_cropper_1658390027623.jpg" class="d-block img-fluid venue-pic" alt="..." style="border-radius: 12px; width: 100%; height: auto; aspect-ratio: 88 / 61; object-fit: cover;">
+								</div>
+								<div class="col-md-3 col-8">
+									<div class="rating_list">
+										<h3>{{ $item->dsc_lapangan }}</h3>
+                                        <p>Mulai dari Rp. {{ number_format($item->harga_lapangan) }} /Jam</p>
+                                        <ul class="blog_meta list">
+                                            <li><a href="#"><i class="lnr lnr-user"></i> Futsal</a></li>
+                                            <li><a href="#"><i class="lnr lnr-calendar-full"></i> Indoor</a></li>
+                                            <li><a href="#"><i class="lnr lnr-eye"></i> {{ $item->tipe_lapangan }}</a></li>
+                                        </ul>
+									</div>
+								</div>
+                                <input type="hidden" id="id_tuser" value="{{ Auth::user()->id_tuser }}">
+                                <div class="col-md-5">
+                                    <form class="row contact_form" method="post" id="contactForm" novalidate="novalidate">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-sm-4 col-form-label">Jam Main :</label>
+                                            <div class="form-group col-md-8">
+                                                <select id="jam_mulai_{{ $item->id_lapangan }}" name="jam_mulai"  class="form-control">
+                                                    <option disabled selected>Jam Mulai</option>
+
+                                                </select>
+                                            </div>
+                                            <label for="staticEmail" class="col-sm-4 col-form-label">Jam Berakhir :</label>
+                                            <div class="form-group col-md-8">
+                                                <select id="jam_berakhir_{{ $item->id_lapangan }}" name="jam_berakhir" class="form-control">
+                                                    <option>Jam Berakhir</option>
+
+                                                </select>
+                                            </div>
+                                            <div class="col-md-12 text-right">
+                                                <button type="button" onclick="addbooking('{{$item->id_lapangan}}')" class="btn primary-btn">Booking Sekarang</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
 							</div>
-                            <div class="col-md-6 form-group">
-                                <button type="submit" value="submit" class="primary-btn">Kembali</button>
-                            </div>
-						</form>
+                            @endforeach
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-	<!--================End Login Box Area =================-->
+	<!--================End Product Description Area =================-->
 @endsection
 
+@push('script')
+<script src="{{ asset('assets/js/booking.js') }}"></script>
+<script>
+    $( function() {
+        $('#datepicker').datepicker({
+            // startDate: new Date(),
+            format: 'mm/dd/yyyy',
+            // minDate: 0,
+            showOtherMonths: true,
+            weekHeader: "W",
+            autoOpen:true,
+		    autoclose: true,
+		    todayHighlight: true,
+            dayNamesMin: ['Min', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+        });
+    });
+</script>
+@endpush
