@@ -126,7 +126,7 @@
 							<div class="col-md-12 form-group">
 								<input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
 							</div>
-                            <input type="hidden" name="roles" id="roles" value="3">
+                            <input type="hidden" name="roles" id="roles" value="1">
 							<div class="col-md-12 form-group">
 								<div class="creat_account">
 									<input type="checkbox" id="f-option2" name="selector">
