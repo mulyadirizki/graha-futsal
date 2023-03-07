@@ -144,7 +144,7 @@
                         </div>
                         <br>
                         <p>
-                            Padang, Indonesia, {{ date('M d, Y') }} <br>
+                            Bukittinggi, Indonesia, {{ date('M d, Y') }} <br>
                         </p>
                     </div>
                 </div>
