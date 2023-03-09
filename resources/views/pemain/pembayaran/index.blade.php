@@ -51,7 +51,7 @@
                                     <td>
                                         <div class="media">
                                             <div class="d-flex">
-                                            <img src="https://api.ayo.co.id/image/venue-field/165839009833230.image_cropper_1658390027623.jpg" width="150px">
+                                            <img src="https://lh3.googleusercontent.com/p/AF1QipM9ItiQ9M0D5rsMKr-VizgPoV0Teib2d0VYXYBi=s680-w680-h510" width="150px">
                                             </div>
                                             <div class="media-body">
                                                 <p>{{ $value->dsc_lapangan }}</p>

@@ -92,7 +92,7 @@
                             @foreach($data as $item)
 							<div class="row total_rate">
 								<div class="col-md-4 col-4">
-                                    <img src="https://api.ayo.co.id/image/venue-field/165839009833230.image_cropper_1658390027623.jpg" class="d-block img-fluid venue-pic" alt="..." style="border-radius: 12px; width: 100%; height: auto; aspect-ratio: 88 / 61; object-fit: cover;">
+                                    <img src="https://lh3.googleusercontent.com/p/AF1QipM9ItiQ9M0D5rsMKr-VizgPoV0Teib2d0VYXYBi=s680-w680-h510" class="d-block img-fluid venue-pic" alt="..." style="border-radius: 12px; width: 100%; height: auto; aspect-ratio: 88 / 61; object-fit: cover;">
 								</div>
 								<div class="col-md-3 col-8">
 									<div class="rating_list">

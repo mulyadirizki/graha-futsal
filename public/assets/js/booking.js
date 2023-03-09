@@ -79,7 +79,7 @@ function addbooking(id_lapangan) {
                 timer: 1500
             });
 
-            // window.location.href = "{{URL::to('pemainPembayaranBooking')}}"
+            window.location.href = "/id/u/pemain/pembayaran";
         }
     });
 }
