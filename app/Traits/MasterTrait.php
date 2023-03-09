@@ -19,7 +19,7 @@ trait MasterTrait
 
     protected function idTuser()
     {
-        $id = IdGenerator::generate(['table' => 't_user', 'field' => 'id_tuser', 'length' => 8, 'prefix' => '0']);
+        $id = IdGenerator::generate(['table' => 't_user', 'field' => 'id_tuser', 'length' => 8, 'prefix' => '0', 'reset_on_prefix_change' => true]);
         return $id;
     }
 
