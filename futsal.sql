@@ -34,6 +34,55 @@ CREATE TABLE `failed_jobs` (
 
 /*Data for the table `failed_jobs` */
 
+/*Table structure for table `t_user` */
+
+DROP TABLE IF EXISTS `t_user`;
+
+CREATE TABLE `t_user` (
+  `id_tuser` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tgl_lahir` date NOT NULL,
+  `j_kel` int(11) NOT NULL,
+  `no_hp` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(35) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alamat` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id_tuser`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `t_user` */
+
+insert  into `t_user`(`id_tuser`,`nama`,`tgl_lahir`,`j_kel`,`no_hp`,`email`,`alamat`,`created_at`,`updated_at`) values 
+('00000001','MULYADI RIZKI PUTRA','2001-07-04',1,'082117875570','mulyadirizkiputra10@gmail.com','Kota Padang','2023-02-06 12:30:08','2023-02-06 12:30:08'),
+('FA000002','PEMILIK FUTSAL','2001-07-04',1,'082117875570','owner@@gmail.com','Kota Padang','2023-02-07 22:26:51','2023-02-07 22:26:51'),
+('FA000003','REZA ANDESTA','2001-05-21',1,'08985897901','rezaandesta29@gmail.com','Kota Padang','2023-02-07 22:33:23','2023-02-07 22:33:23'),
+('FA000004','RICAL CANDRA','2023-02-08',1,'082117875570','rical@gmail.com','Padang','2023-02-08 12:03:50','2023-02-08 12:03:50');
+
+/*Table structure for table `m_lapangan` */
+
+DROP TABLE IF EXISTS `m_lapangan`;
+
+CREATE TABLE `m_lapangan` (
+  `id_lapangan` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_lapangan` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dsc_lapangan` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipe_lapangan` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jam_buka` time NOT NULL,
+  `jam_tutup` time NOT NULL,
+  `status_lapangan` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `harga_lapangan` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id_lapangan`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `m_lapangan` */
+
+insert  into `m_lapangan`(`id_lapangan`,`kode_lapangan`,`dsc_lapangan`,`tipe_lapangan`,`jam_buka`,`jam_tutup`,`status_lapangan`,`harga_lapangan`,`created_at`,`updated_at`) values 
+('2302080001','LAP001','LAPANGAN 1','Sintetis','08:00:00','00:00:00','1','130000','2023-02-08 23:28:24','2023-02-08 23:32:43'),
+('2302140001','LAP002','LAPANGAN 2','Sintetis','08:00:00','00:00:00','1','130000','2023-02-14 13:42:51','2023-02-14 13:42:51');
+
 /*Table structure for table `m_booking` */
 
 DROP TABLE IF EXISTS `m_booking`;
@@ -61,30 +110,6 @@ CREATE TABLE `m_booking` (
 insert  into `m_booking`(`id_booking`,`id_tuser`,`id_lapangan`,`tgl_booking`,`jam_mulai`,`jam_berakhir`,`status`,`total_biaya`,`created_at`,`updated_at`) values 
 ('2302100001','FA000004','2302080001','2023-02-10','05:00:00','06:00:00','1','130000','2023-02-10 09:39:00','2023-02-10 09:39:00'),
 ('2302100002','FA000004','2302080001','2023-02-10','07:00:00','09:00:00','1','260000',NULL,NULL);
-
-/*Table structure for table `m_lapangan` */
-
-DROP TABLE IF EXISTS `m_lapangan`;
-
-CREATE TABLE `m_lapangan` (
-  `id_lapangan` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `kode_lapangan` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dsc_lapangan` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tipe_lapangan` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jam_buka` time NOT NULL,
-  `jam_tutup` time NOT NULL,
-  `status_lapangan` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `harga_lapangan` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id_lapangan`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-/*Data for the table `m_lapangan` */
-
-insert  into `m_lapangan`(`id_lapangan`,`kode_lapangan`,`dsc_lapangan`,`tipe_lapangan`,`jam_buka`,`jam_tutup`,`status_lapangan`,`harga_lapangan`,`created_at`,`updated_at`) values 
-('2302080001','LAP001','LAPANGAN 1','Sintetis','08:00:00','00:00:00','1','130000','2023-02-08 23:28:24','2023-02-08 23:32:43'),
-('2302140001','LAP002','LAPANGAN 2','Sintetis','08:00:00','00:00:00','1','130000','2023-02-14 13:42:51','2023-02-14 13:42:51');
 
 /*Table structure for table `m_transaksi` */
 
@@ -191,22 +216,6 @@ insert  into `t_fasilitas`(`id_fasilitas`,`id_lapangan`,`dsc_fasilitas`,`created
 ('FA001','2302080001','Wc, Bola','2023-02-08 23:28:24','2023-02-08 23:28:24'),
 ('FA002','2302140001','Toilet, Rompi Bola','2023-02-14 13:42:51','2023-02-14 13:42:51');
 
-/*Table structure for table `t_history` */
-
-DROP TABLE IF EXISTS `t_history`;
-
-CREATE TABLE `t_history` (
-  `id_history` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_transaksi` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id_history`),
-  KEY `t_history_id_transaksi_foreign` (`id_transaksi`),
-  CONSTRAINT `t_history_id_transaksi_foreign` FOREIGN KEY (`id_transaksi`) REFERENCES `t_transaksi` (`id_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-/*Data for the table `t_history` */
-
 /*Table structure for table `t_transaksi` */
 
 DROP TABLE IF EXISTS `t_transaksi`;
@@ -231,30 +240,21 @@ CREATE TABLE `t_transaksi` (
 
 /*Data for the table `t_transaksi` */
 
-/*Table structure for table `t_user` */
+/*Table structure for table `t_history` */
 
-DROP TABLE IF EXISTS `t_user`;
+DROP TABLE IF EXISTS `t_history`;
 
-CREATE TABLE `t_user` (
-  `id_tuser` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nama` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tgl_lahir` date NOT NULL,
-  `j_kel` int(11) NOT NULL,
-  `no_hp` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(35) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `alamat` text COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `t_history` (
+  `id_history` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_transaksi` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id_tuser`)
+  PRIMARY KEY (`id_history`),
+  KEY `t_history_id_transaksi_foreign` (`id_transaksi`),
+  CONSTRAINT `t_history_id_transaksi_foreign` FOREIGN KEY (`id_transaksi`) REFERENCES `t_transaksi` (`id_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-/*Data for the table `t_user` */
-
-insert  into `t_user`(`id_tuser`,`nama`,`tgl_lahir`,`j_kel`,`no_hp`,`email`,`alamat`,`created_at`,`updated_at`) values 
-('00000001','MULYADI RIZKI PUTRA','2001-07-04',1,'082117875570','mulyadirizkiputra10@gmail.com','Kota Padang','2023-02-06 12:30:08','2023-02-06 12:30:08'),
-('FA000002','PEMILIK FUTSAL','2001-07-04',1,'082117875570','owner@@gmail.com','Kota Padang','2023-02-07 22:26:51','2023-02-07 22:26:51'),
-('FA000003','REZA ANDESTA','2001-05-21',1,'08985897901','rezaandesta29@gmail.com','Kota Padang','2023-02-07 22:33:23','2023-02-07 22:33:23'),
-('FA000004','RICAL CANDRA','2023-02-08',1,'082117875570','rical@gmail.com','Padang','2023-02-08 12:03:50','2023-02-08 12:03:50');
+/*Data for the table `t_history` */
 
 /*Table structure for table `users` */
 
