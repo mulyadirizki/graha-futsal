@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="{{ url('assets/css/feather.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/dataTables.bootstrap4.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+	  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
     @stack('css')
   </head>
   <body class="vertical  light  ">
