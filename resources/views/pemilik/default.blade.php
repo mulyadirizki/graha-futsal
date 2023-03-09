@@ -21,6 +21,11 @@
     <link rel="stylesheet" href="{{ url('assets/css/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/app-light.css') }}" id="lightTheme">
     <link rel="stylesheet" href="{{ url('assets/css/app-dark.css') }}" id="darkTheme" disabled>
+    <link rel="stylesheet" href="{{ url('assets/css/feather.css') }}">
+    <link rel="stylesheet" href="{{ url('assets/css/dataTables.bootstrap4.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
+	  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+    @stack('css')
   </head>
   <body class="vertical  light  ">
     <div class="wrapper">
@@ -63,7 +68,14 @@
     <script src="{{ url('assets/js/dropzone.min.js') }}"></script>
     <script src="{{ url('assets/js/uppy.min.js') }}"></script>
     <script src="{{ url('assets/js/quill.min.js') }}"></script>
-    
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
     <script>
       $('.select2').select2(
       {
@@ -280,5 +292,6 @@
       gtag('js', new Date());
       gtag('config', 'UA-56159088-1');
     </script>
+    @stack('script')
   </body>
 </html>

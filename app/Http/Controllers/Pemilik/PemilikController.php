@@ -14,7 +14,16 @@ class PemilikController extends Controller
 {
     public function pemilikPage()
     {
-        return view('pemilik.home');
+        $user = DB::table('t_user')->join('users', 't_user.id_tuser', '=', 'users.id_tuser')
+                ->where('users.roles', 3)
+                ->count();
+        $booking = Booking::join('t_user', 'm_booking.id_tuser', '=', 't_user.id_tuser')
+                ->join('m_lapangan', 'm_booking.id_lapangan', '=', 'm_lapangan.id_lapangan')
+                ->count();
+        $transaksi = Pembayaran::join('t_user', 't_transaksi.id_tuser', '=', 't_user.id_tuser')
+                ->join('m_transaksi', 't_transaksi.id_mtransaksi', '=', 'm_transaksi.id_mtransaksi')
+                ->count();
+        return view('pemilik.home', compact('user', 'booking', 'transaksi'));
     }
 
     public function pemilikPemainPage()

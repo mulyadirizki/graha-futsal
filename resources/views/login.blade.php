@@ -96,13 +96,21 @@
 				<div class="col-md-12">
 					<div class="login_form_inner">
 						<h3>Log in to enter</h3>
+						@if(session('success'))
+						<p class="alert alert-success">{{ session('success') }}</p>
+						@endif
+						@if($errors->any())
+							@foreach($errors->all() as $err)
+								<p class="alert alert-danger">{{ $err }}</p>
+							@endforeach
+						@endif
 						<form action="{{ route('loginStore') }}" method="POST" class="row login_form" id="contactForm" novalidate="novalidate">
               				@csrf
 							<div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="username" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+								<input type="text" class="form-control" id="username" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'" required>
 							</div>
 							<div class="col-md-12 form-group">
-								<input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+								<input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" required>
 							</div>
 							<div class="col-md-12 form-group">
 								<div class="creat_account">

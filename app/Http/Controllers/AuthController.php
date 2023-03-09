@@ -56,7 +56,7 @@ class AuthController extends Controller
             });
             // return response
 
-            return redirect()->route('login');
+            return redirect()->route('login')->with('success', 'Registration berhasil. silahkan login!');
         }catch (\Exception $e) {
             //return JSON process insert failed
             return response()->json([
@@ -86,10 +86,13 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'username'  => 'required',
             'password'  => 'required'
+        ], [
+            'username.required' => 'Username tidak boleh kosong',
+            'password.required' => 'Password tidak boleh kosong'
         ]);
 
         if($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return back()->withErrors($validator->errors())->withInput();
         }
 
         $credentials = $request->only('username', 'password');
@@ -107,6 +110,10 @@ class AuthController extends Controller
                 ]);
             }
         }
+
+        return back()->withErrors([
+            'password' => 'Username atau Password salah',
+        ]);
 
         // return redirect()->route('login')
         // ->withInput()
