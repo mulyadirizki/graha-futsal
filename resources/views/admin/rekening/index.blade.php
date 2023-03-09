@@ -8,7 +8,7 @@
 @endpush
 
 @push('title')
-    <title>Data Lapangan | Futsal</title>
+    <title>Data Rekening | Futsal</title>
 @endpush
 
 @section('content')
@@ -21,20 +21,19 @@
                     <div class="col-md-12">
                         <div class="card shadow">
                             <div class="card-body">
-                              <div class="toolbar row mb-3">
-                                  <div class="col ml-auto">
+                                <div class="col ml-auto">
                                     <div class="dropdown float-right">
                                       <a href="{{ route('rekeningCreatePage') }}">
                                         <button class="btn btn-primary float-right ml-3" type="button">Add Rekening +</button>
                                       </a>
-                                      <button class="btn btn-primary float-right ml-3" type="button">Export</button>
                                     </div>
                                   </div>
                                 </div>
                                 <!-- table -->
-                                <table class="table datatables" id="dataTable-1">
-                                    <thead>
+                                <table class="table table-striped table-bordered nowrap" id="dataTable-1">
+                                    <thead class="thead-dark">
                                         <tr>
+                                            <th>No</th>
                                             <th>Nama Pemilik Rekening</th>
                                             <th>No Rekening</th>
                                             <th>Nama Bank</th>
@@ -42,8 +41,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($data as $item)
+                                        @foreach($data as $index => $item)
                                             <tr>
+                                                <td>{{ $index + 1}}</td>
                                                 <td>{{ $item->nama_rek }}</td>
                                                 <td>{{ $item->no_rek }}</td>
                                                 <td>{{ $item->jenis_bank }}</td>
@@ -72,17 +72,7 @@
     </div> <!-- .container-fluid -->
 @endsection
 @push('script')
-    <!-- <script src="{{ url('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ url('assets/js/dataTables.bootstrap4.min.js') }}"></script> -->
     <script>
-    //   $('#dataTable-1').DataTable(
-    //   {
-    //     autoWidth: true,
-    //     "lengthMenu": [
-    //       [16, 32, 64, -1],
-    //       [16, 32, 64, "All"]
-    //     ]
-    //   });
       $(document).ready(function() {
           $('#dataTable-1').DataTable( {
               dom: 'Bfrtip',
@@ -93,14 +83,6 @@
                 [16, 32, 64, -1],
                 [16, 32, 64, "All"]
               ],
-              scrollX:        true,
-              scrollCollapse: true,
-              autoWidth:         true,
-              paging:         true,
-              columnDefs: [
-                { "width": "200px", "targets": [1] },
-                { "width": "100px", "targets": [2, 3, 4, 5, 8] }
-              ]
           } );
       } );
     </script>
