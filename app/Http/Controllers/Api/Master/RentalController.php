@@ -21,7 +21,6 @@ class RentalController extends Controller
             'id_mobil'    => 'required',
             'tgl_rental'  => 'required',
             'tgl_kembali' => 'required',
-            'total_biaya' => 'required',
             'cara_bayar'  => 'required'
         ]);
 
