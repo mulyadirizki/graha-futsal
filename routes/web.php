@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 
 // backend
 use App\Http\Controllers\Backend\MainController;
+use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\MobilController;
 use App\Http\Controllers\Backend\RekeningController;
 
@@ -48,9 +49,17 @@ Route::group([ 'prefix' => 'admin' ,'middleware' => 'isAdmin'], function() {
     Route::post('/rekening/update/store', [RekeningController::class, 'upadteRekeningStore'])->name('upadteRekeningStore');
     Route::delete('/rekening/delete/{id_rek}', [RekeningController::class, 'deleteRekening'])->name('deleteRekening');
 
-    // data Users
-    Route::get('/data-rental', [MainController::class, 'getRentaldmin'])->name('getRentaldmin');
-    Route::get('/data-user', [MainController::class, 'getUserdmin'])->name('getUserdmin');
+    // data users
+    Route::get('/data-user', [UserController::class, 'getUserdmin'])->name('getUserdmin');
+    Route::get('/data-user/create', [UserController::class, 'addUserAdmin'])->name('addUserAdmin');
+    Route::post('/data-user/store', [UserController::class, 'addUserAdminStore'])->name('addUserAdminStore');
+    Route::get('/data-user/update/{id_tuser}', [UserController::class, 'upadteUserAdmin'])->name('upadteUserAdmin');
+    Route::post('/data-user/update/store', [UserController::class, 'upadteUserAdminStore'])->name('upadteUserAdminStore');
+    Route::delete('/data-user/delete/{id_tuser}', [UserController::class, 'deleteUserdmin'])->name('deleteUserdmin');
+
+    // data rental
+    Route::get('/data-mobil-rental', [MainController::class, 'getMobilRentaldmin'])->name('getMobilRentaldmin');
+    Route::delete('/data-mobil-rental/delete/{id_rental}', [MainController::class, 'deleteMobilRentaldmin'])->name('deleteMobilRentaldmin');
 
     // transaksi rental kembali
     Route::get('/data-rental-kembali', [MainController::class, 'getRentalKembali'])->name('getRentalKembali');

@@ -43,7 +43,7 @@
             <span class="menu-header-text">Transaksi</span>
         </li>
         <li class="menu-item">
-            <a href="{{ route('getRentaldmin') }}" class="menu-link">
+            <a href="{{ route('getMobilRentaldmin') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
                 <div data-i18n="Account Settings">Data Rental</div>
             </a>

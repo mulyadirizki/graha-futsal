@@ -19,6 +19,14 @@
         <!-- Responsive Table -->
         <div class="card">
             <h5 class="card-header">Data Rental</h5>
+            @if(session('success'))
+                <p class="alert alert-success">{{ session('success') }}</p>
+            @endif
+            @if($errors->any())
+                @foreach($errors->all() as $err)
+                    <p class="alert alert-danger">{{ $err }}</p>
+                @endforeach
+            @endif
             <div class="table-responsive text-nowrap">
                 <table id="data-peserta" class="table table-hover table-bordered">
                     <thead>
@@ -36,8 +44,8 @@
                             <th>Total Biaya</th>
                             <th>Cara Bayar</th>
                             <th>Status Pembayaran</th>
-                            <th>Action</th>
                             <th>Bukti Bayar</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,6 +78,15 @@
                                 </td>
                                 <td>
                                     <?php if(empty($value->id_pembayaran)) { ?>
+                                    <p>Tidak Ada bukti pembayaran</p>
+                                    <?php } else { ?>
+                                    <img src="{{ url('storage/img/pembayaran/' . $value->bukti_transaksi) }}"
+                                        alt="{{ $value->bukti_transaksi }}"
+                                        style="border-radius: 12px; width: 100%; height: auto; aspect-ratio: 88 / 61; object-fit: cover;">
+                                    <?php } ?>
+                                </td>
+                                <td>
+                                    <?php if(empty($value->id_pembayaran)) { ?>
                                     <?php /*if($value->cara_bayar == '2')*/ { ?>
                                     <a href="{{ route('pembyaaranRental', $value->id_rental) }}"><button
                                             class="btn btn-sm btn-primary">Bayar</button></a>
@@ -77,15 +94,12 @@
                                     <?php } else { ?>
                                     <button class="btn btn-sm btn-primary" disabled>Bayar</button>
                                     <?php } ?>
-                                </td>
-                                <td>
-                                    <?php if(empty($value->id_pembayaran)) { ?>
-                                    <p>Tidak Ada bukti pembayaran</p>
-                                    <?php } else { ?>
-                                    <img src="{{ url('storage/img/pembayaran/' . $value->bukti_transaksi) }}"
-                                        alt="{{ $value->bukti_transaksi }}"
-                                        style="border-radius: 12px; width: 100%; height: auto; aspect-ratio: 88 / 61; object-fit: cover;">
-                                    <?php } ?>
+                                    <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('deleteMobilRentaldmin', $value->id_rental) }}" method="POST">
+                                        <a href="{{ route('upadteUserAdmin', $value->id_rental) }}" class="btn btn-sm btn-primary">Edit</a>
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -99,8 +113,15 @@
     </div>
 @endsection
 @push('script')
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwtG5YjuP24l37yssdNn1s7Bj3x_SFD7c&callback=initMap&libraries=places&v=weekly"
-        defer></script>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+        @if(session()->has('success'))
+
+            toastr.success('{{ session('success') }}', 'BERHASIL!');
+
+        @elseif(session()->has('error'))
+
+            toastr.error('{{ session('error') }}', 'GAGAL!');
+
+        @endif
+    </script>
 @endpush

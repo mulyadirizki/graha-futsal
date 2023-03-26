@@ -17,9 +17,20 @@
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Users /</span> Data Users</h4>
         <hr class="my-5" />
 
+        <a href="{{ route('addUserAdmin') }}">
+            <button class="btn btn-info btn-sm">Tambah User</button>
+        </a><br><br>
         <!-- Responsive Table -->
         <div class="card">
             <h5 class="card-header">Data Mobil</h5>
+                @if(session('success'))
+					<p class="alert alert-success">{{ session('success') }}</p>
+                @endif
+                @if($errors->any())
+                    @foreach($errors->all() as $err)
+                        <p class="alert alert-danger">{{ $err }}</p>
+                    @endforeach
+                @endif
                 <div class="table-responsive text-nowrap">
                     <table id="data-peserta" class="table table-hover table-bordered">
                         <thead>
@@ -33,6 +44,8 @@
                                 <th>Email</th>
                                 <th>Pekerjaan</th>
                                 <th>Alamat</th>
+                                <th>Roles</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,6 +60,23 @@
                                     <td>{{ $value->email }}</td>
                                     <td>{{ $value->pekerjaan }}</td>
                                     <td>{{ $value->alamat }}</td>
+                                    <td>
+                                        <?php
+                                            if($value->roles == '1') {
+                                                echo 'Admin';
+                                            } else if ($value->roles == '2') {
+                                                echo 'User';
+                                            }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('deleteUserdmin', $value->iduser) }}" method="POST">
+                                            <a href="{{ route('upadteUserAdmin', $value->iduser) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -59,6 +89,15 @@
     </div>
 @endsection
 @push('script')
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwtG5YjuP24l37yssdNn1s7Bj3x_SFD7c&callback=initMap&libraries=places&v=weekly" defer></script>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+        @if(session()->has('success'))
+
+            toastr.success('{{ session('success') }}', 'BERHASIL!');
+
+        @elseif(session()->has('error'))
+
+            toastr.error('{{ session('error') }}', 'GAGAL!');
+
+        @endif
+    </script>
 @endpush

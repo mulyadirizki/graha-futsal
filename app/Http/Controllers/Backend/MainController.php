@@ -28,9 +28,9 @@ class MainController extends Controller
         return view('backend.home', compact('user', 'rental'));
     }
 
-    public function getRentaldmin()
+    public function getMobilRentaldmin()
     {
-        $data = Rental::select('t_rental.*', 'm_mobil.*', 't_user.nama', 't_user.no_hp','t_pembayaran.*',
+        $data = Rental::select('t_rental.*', 'm_mobil.*', 't_user.nama', 't_user.no_hp','t_pembayaran.id_pembayaran',
             (DB::raw('DATEDIFF(t_rental.tgl_kembali, t_rental.tgl_rental) as lama_sewa')))
             ->leftJoin('m_mobil', 't_rental.id_mobil', '=', 'm_mobil.id_mobil')
             ->leftJoin('t_user', 't_rental.id_tuser', '=', 't_user.id_tuser')
@@ -40,14 +40,16 @@ class MainController extends Controller
 
     }
 
-    public function getUserdmin()
+    public function deleteMobilRentaldmin($id_rental)
     {
-        $data = T_user::select('t_user.*', 'users.email',
-            (DB::raw('(CASE WHEN t_user.j_kel = 1 THEN "Laki - Laki" WHEN t_user.j_kel = 2 THEN "Perempuan" ELSE "-" END) as jkel')))
-            ->leftJoin('users', 'users.id_tuser', '=', 't_user.id_tuser')
-            ->where('users.roles', 2)
-            ->get();
-        return view('backend.data.user', compact('data'));
+        $rental = Rental::find($id_rental);
+
+        if($rental) {
+            $rental->delete();
+            return redirect()->route('getMobilRentaldmin')->with(['success' => 'Data Berhasil Dihapus!']);
+        }else {
+            return redirect()->route('getMobilRentaldmin')->with(['error' => 'Data Gagal Dihapus!']);
+        }
     }
 
     // rental kembali
