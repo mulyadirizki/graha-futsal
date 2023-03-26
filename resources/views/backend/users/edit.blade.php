@@ -29,7 +29,7 @@
             <div class="card-body">
                 <form action="{{ route('upadteUserAdminStore') }}" method="post" id="add-user" enctype="multipart/form-data">
                     @csrf
-                    <input type="text" id="id_tuser" name="id_tuser" value="{{ $user->iduser }}">
+                    <input type="hidden" id="id_tuser" name="id_tuser" value="{{ $user->iduser }}">
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label" for="nik">NIK</label>
                         <div class="col-sm-10">

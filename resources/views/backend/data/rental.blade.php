@@ -16,6 +16,9 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Rental /</span> Data Rental</h4>
         <hr class="my-5" />
+        <a href="{{ route('addMobilRentaldmin') }}">
+            <button class="btn btn-info btn-sm">Tambah Rental</button>
+        </a><br><br>
         <!-- Responsive Table -->
         <div class="card">
             <h5 class="card-header">Data Rental</h5>
@@ -71,7 +74,7 @@
                                 </td>
                                 <td>
                                     <?php if (empty($value->id_pembayaran)) {
-                                        echo 'Belum Bayar1';
+                                        echo 'Belum Bayar';
                                     } else {
                                         echo 'Sudah Bayar';
                                     } ?>
@@ -95,7 +98,7 @@
                                     <button class="btn btn-sm btn-primary" disabled>Bayar</button>
                                     <?php } ?>
                                     <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('deleteMobilRentaldmin', $value->id_rental) }}" method="POST">
-                                        <a href="{{ route('upadteUserAdmin', $value->id_rental) }}" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="{{ route('updateMobilRentaldmin', $value->id_rental) }}" class="btn btn-sm btn-primary">Edit</a>
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>

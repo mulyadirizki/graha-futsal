@@ -59,6 +59,10 @@ Route::group([ 'prefix' => 'admin' ,'middleware' => 'isAdmin'], function() {
 
     // data rental
     Route::get('/data-mobil-rental', [MainController::class, 'getMobilRentaldmin'])->name('getMobilRentaldmin');
+    Route::get('/data-mobil-rental/create', [MainController::class, 'addMobilRentaldmin'])->name('addMobilRentaldmin');
+    Route::post('/data-mobil-rental/store', [MainController::class, 'addMobilRentaldminStore'])->name('addMobilRentaldminStore');
+    Route::get('/data-mobil-rental/update/{id_rental}', [MainController::class, 'updateMobilRentaldmin'])->name('updateMobilRentaldmin');
+    Route::post('/data-mobil-rental/update/store', [MainController::class, 'updateMobilRentaldminStore'])->name('updateMobilRentaldminStore');
     Route::delete('/data-mobil-rental/delete/{id_rental}', [MainController::class, 'deleteMobilRentaldmin'])->name('deleteMobilRentaldmin');
 
     // transaksi rental kembali

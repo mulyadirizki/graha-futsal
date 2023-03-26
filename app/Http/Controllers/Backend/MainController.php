@@ -40,6 +40,142 @@ class MainController extends Controller
 
     }
 
+    public function addMobilRentaldmin()
+    {
+        $user = T_user::where('t_user.id_tuser', 2)->select('t_user.*', (DB::raw("CONVERT(t_user.id_tuser, CHAR) as iduser")))->get();
+        $mobil = Mobil::all();
+        return view('backend.data.createRental', compact('user', 'mobil'));
+    }
+
+    public function updateMobilRentaldmin($id_rental)
+    {
+        $user = Rental::select('t_rental.*', 'm_mobil.*', 't_user.nama', 't_user.no_hp','t_pembayaran.id_pembayaran',
+            (DB::raw('DATEDIFF(t_rental.tgl_kembali, t_rental.tgl_rental) as lama_sewa')))
+            ->leftJoin('m_mobil', 't_rental.id_mobil', '=', 'm_mobil.id_mobil')
+            ->leftJoin('t_user', 't_rental.id_tuser', '=', 't_user.id_tuser')
+            ->leftJoin('t_pembayaran', 't_pembayaran.id_rental', '=', 't_pembayaran.id_pembayaran')
+            ->where('t_rental.id_rental', $id_rental)
+            ->first();
+
+        $mobil = Mobil::all();
+        return view('backend.data.editRental', compact('user', 'mobil'));
+    }
+
+    public function addMobilRentaldminStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id_mobil'    => 'required',
+            'tgl_rental'  => 'required',
+            'tgl_kembali' => 'required',
+            'cara_bayar'  => 'required'
+        ]);
+
+        //if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $id_rental = $this->idCreate('t_rental', 'id_rental');
+
+        $harga_sewa = Mobil::where('id_mobil', $request->id_mobil)->first();
+        $startTime = $request->tgl_rental;
+        $endTime = $request->tgl_kembali;
+
+        $diff  = abs(strtotime($endTime) - strtotime($startTime));
+        $years = floor($diff / (365*60*60*24));
+        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+
+        $total_bayar = $days * $harga_sewa->harga_sewa;
+
+        $save = Rental::create([
+            'id_rental'     => $id_rental,
+            'id_tuser'      => $request->id_tuser,
+            'id_mobil'      => $request->id_mobil,
+            'tgl_rental'    => $request->tgl_rental,
+            'tgl_kembali'   => $request->tgl_kembali,
+            'total_biaya'   => $total_bayar,
+            'cara_bayar'    => $request->cara_bayar,
+            'status_rental' => 1
+        ]);
+
+        if ($save) {
+            $data = Rental::where('t_rental.id_rental', $id_rental)
+                ->leftJoin('t_user', 't_rental.id_tuser', '=', 't_user.id_tuser')
+                ->leftJoin('m_mobil', 't_rental.id_mobil', '=', 'm_mobil.id_mobil')
+                ->select('t_rental.*', 't_user.nama', 'm_mobil.*')
+                ->first();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Success create data',
+                'data'    => $data
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed create data'
+            ], 200);
+        }
+    }
+
+    public function updateMobilRentaldminStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id_mobil'    => 'required',
+            'tgl_rental'  => 'required',
+            'tgl_kembali' => 'required',
+            'cara_bayar'  => 'required'
+        ]);
+
+        //if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $harga_sewa = Mobil::where('id_mobil', $request->id_mobil)->first();
+        $startTime = $request->tgl_rental;
+        $endTime = $request->tgl_kembali;
+
+        $diff  = abs(strtotime($endTime) - strtotime($startTime));
+        $years = floor($diff / (365*60*60*24));
+        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+
+        $total_bayar = $days * $harga_sewa->harga_sewa;
+
+        $save = Rental::where('t_rental.id_rental', $request->id_rental)
+            ->update([
+                'id_rental'     => $request->id_rental,
+                'id_tuser'      => $request->id_tuser,
+                'id_mobil'      => $request->id_mobil,
+                'tgl_rental'    => $request->tgl_rental,
+                'tgl_kembali'   => $request->tgl_kembali,
+                'total_biaya'   => $total_bayar,
+                'cara_bayar'    => $request->cara_bayar,
+                'status_rental' => 1
+            ]);
+
+        if ($save) {
+            $data = Rental::where('t_rental.id_rental', $request->id_rental)
+                ->leftJoin('t_user', 't_rental.id_tuser', '=', 't_user.id_tuser')
+                ->leftJoin('m_mobil', 't_rental.id_mobil', '=', 'm_mobil.id_mobil')
+                ->select('t_rental.*', 't_user.nama', 'm_mobil.*')
+                ->first();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Success update data',
+                'data'    => $data
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed update data'
+            ], 200);
+        }
+    }
+
     public function deleteMobilRentaldmin($id_rental)
     {
         $rental = Rental::find($id_rental);
