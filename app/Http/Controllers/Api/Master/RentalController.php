@@ -71,4 +71,19 @@ class RentalController extends Controller
             ], 200);
         }
     }
+
+    public function rentalGet()
+    {
+        $data = Rental::select('t_rental.*', 'm_mobil.*', 't_pembayaran.id_pembayaran',
+                (DB::raw('DATEDIFF(t_rental.tgl_kembali, t_rental.tgl_rental) as lama_sewa')))
+                ->leftJoin('m_mobil', 't_rental.id_mobil', '=', 'm_mobil.id_mobil')
+                ->leftJoin('t_pembayaran', 't_pembayaran.id_rental', '=', 't_pembayaran.id_pembayaran')
+                ->where('t_rental.id_tuser', auth()->guard('api')->user()->id_tuser)
+                ->get();
+
+        return response()->json([
+            'success'   => true,
+            'data'      => $data
+        ], 200);
+    }
 }

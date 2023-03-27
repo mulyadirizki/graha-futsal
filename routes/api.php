@@ -37,4 +37,5 @@ Route::middleware(['auth:api'])->group(function () {
 
     // rental
     Route::post('/rental/create', [RentalController::class, 'rentalAdd'])->name('rentalAdd');
+    Route::get('/rental/get-data', [RentalController::class, 'rentalGet'])->name('rentalGet');
 });
