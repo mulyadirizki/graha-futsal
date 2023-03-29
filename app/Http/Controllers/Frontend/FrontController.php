@@ -36,6 +36,28 @@ class FrontController extends Controller
         return view('frontend.mobil.mobil', compact('mobil'));
     }
 
+    public function getCountDate(Request $request)
+    {
+        $count = Rental::select('t_rental.tgl_rental')
+            ->where('tgl_rental', $request->tgl_rental)
+            ->where('id_mobil', $request->id_mobil)
+            ->count();
+
+        if($count) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak Tersedia',
+                'data'    => $count
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Tersedia',
+                'data'    => $count
+            ], 200);
+        }
+    }
+
     public function getMobilDetail($id_mobil)
     {
         $data = Mobil::where('id_mobil', $id_mobil)->first();

@@ -106,11 +106,11 @@
                                 <div class="product-options">
                                     <label>
                                         Tanggal Rental
-                                        <input type="date" id="tgl_rental" class="input-select">
-                                    </label>
+                                        <input type="date" id="tgl_rental" style="width: 200px" onChange="cekTgl()" class="input-select">
+                                    </label><br><br>
                                     <label>
                                         Tanggal Kembali
-                                        <input type="date" id="tgl_kembali" class="input-select">
+                                        <input type="date" id="tgl_kembali" style="width: 200px" class="input-select">
                                     </label>
                                 </div>
                                 <input type="hidden" value="{{ $data->id_mobil }}" id="id_mobil">
@@ -122,8 +122,11 @@
                                             <option value="1">Transfer</option>
                                             <option value="2">Tunai</option>
                                         </select>
+                                    </div>
+									<div class="qty-label">
+                                        <h5 id="status_mobil">Tersedia</h5>
                                     </div> <br><br>
-                                    <button type="submit" class="add-to-cart-btn">
+                                    <button type="submit" id="btn-rental" class="add-to-cart-btn">
                                         <i class="fa fa-shopping-cart"></i> Confirmasi Rental</button>
                                 </div>
                             </form>
@@ -244,6 +247,36 @@
             $('#tgl_rental').attr('min', maxDate);
             $('#tgl_kembali').attr('min', maxDate);
         });
+
+		function cekTgl() {
+			var id_mobil = $('#id_mobil').val();
+			var tgl_rental1 = $('#tgl_rental').val();
+			console.log(tgl_rental1)
+			$.ajax({
+				url: "{{ route('getCountDate') }}",
+				type: 'GET',
+				data: {
+					id_mobil: id_mobil,
+					tgl_rental: tgl_rental1
+				},
+				success: function(response) {
+					console.log(response.success)
+					if (response.success == false) {
+						$('#btn-rental').prop('disabled', true);
+						$('#status_mobil').text(function(i, oldText) {
+							return oldText === 'Tersedia' ? response.message : oldText;
+							console.log(oldText);
+						});
+					} else if (response.success == true) {
+						$('#btn-rental').prop('disabled', false);
+						$('#status_mobil').text(function(i, oldText) {
+							return oldText === 'Tidak Tersedia' ? response.message : oldText;
+							console.log(oldText);
+						});
+					}
+				}
+			})
+		}
 
         $('#create-rental').submit(function(e) {
             e.preventDefault();

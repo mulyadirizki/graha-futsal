@@ -80,6 +80,7 @@ Route::group([ 'prefix' => 'id/u/user' ,'middleware' => 'isUser'], function() {
     Route::get('/', [FrontController::class, 'getHome'])->name('user');
 
     Route::get('/mobil', [FrontController::class, 'getMobil'])->name('getMobil');
+    Route::get('/mobil/count', [FrontController::class, 'getCountDate'])->name('getCountDate');
     Route::get('/mobil/{id_mobil}', [FrontController::class, 'getMobilDetail'])->name('getMobilDetail');
     Route::post('/mobil/rental', [FrontController::class, 'addMobilRental'])->name('addMobilRental');
 
