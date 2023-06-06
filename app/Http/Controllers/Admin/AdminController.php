@@ -55,4 +55,9 @@ class AdminController extends Controller
                     ->get();
         return view('admin.data.transaksi', compact('data'));
     }
+
+    public function bookingLapangan()
+    {
+        return view('admin.booking.home');
+    }
 }

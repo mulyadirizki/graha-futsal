@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 
 // Controller Admin
 use App\Http\Controllers\Admin\AdminController;
@@ -28,7 +29,7 @@ use App\Http\Controllers\Pemain\PePembayaranController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 })->name('home');
 
 Auth::routes();
@@ -39,6 +40,7 @@ Route::post('daftar', [AuthController::class, 'registerStore'])->name('daftar');
 Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
 Route::post('login', [AuthController::class, 'loginStore'])->name('loginStore');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('kontak-kami', [HomeController::class, 'contact'])->name('contact');
 
 Route::group(['prefix' => 'pemilik', 'middleware' => 'isPemilik'], function() {
     Route::get('/', [PemilikController::class, 'pemilikPage'])->name('pemilik');
@@ -70,6 +72,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'isAdmin'], function() {
     Route::get('/pemain', [AdminController::class, 'pemainPage'])->name('pemainAdmin');
     Route::get('/booking', [AdminController::class, 'bookingPage'])->name('booking');
     Route::get('/transaksi', [AdminController::class, 'transaksiPage'])->name('transaksi');
+
+    Route::get('/booking-lapangan', [AdminController::class, 'bookingLapangan'])->name('bookingLapangan');
 });
 
 Route::group(['prefix' => 'id/u/pemain', 'middleware' => 'isPemain'], function() {
