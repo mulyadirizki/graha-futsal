@@ -74,6 +74,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'isAdmin'], function() {
     Route::get('/transaksi', [AdminController::class, 'transaksiPage'])->name('transaksi');
 
     Route::get('/booking-lapangan', [AdminController::class, 'bookingLapangan'])->name('bookingLapangan');
+    Route::get('/count-date', [AdminController::class, 'getCountDate'])->name('getCountDate');
 });
 
 Route::group(['prefix' => 'id/u/pemain', 'middleware' => 'isPemain'], function() {

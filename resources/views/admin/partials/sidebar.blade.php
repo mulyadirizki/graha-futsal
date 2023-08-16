@@ -63,7 +63,7 @@
         </a>
       </li>
     </ul>
-    <!-- <p class="text-muted nav-heading mt-4 mb-1">
+    <p class="text-muted nav-heading mt-4 mb-1">
       <span>Extra</span>
     </p>
     <ul class="navbar-nav flex-fill w-100 mb-2">
@@ -73,6 +73,6 @@
           <span class="ml-3 item-text">Booking Lapangan</span>
         </a>
       </li>
-    </ul> -->
+    </ul>
   </nav>
 </aside>

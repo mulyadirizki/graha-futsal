@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\T_user;
 use App\Models\User;
 use App\Models\Booking;
+use App\Models\Fasilitas;
 use App\Models\Pembayaran;
 
 class AdminController extends Controller
@@ -58,6 +59,25 @@ class AdminController extends Controller
 
     public function bookingLapangan()
     {
-        return view('admin.booking.home');
+        $data = Fasilitas::join('m_lapangan', 't_fasilitas.id_lapangan', '=', 'm_lapangan.id_lapangan')
+                ->select('t_fasilitas.dsc_fasilitas', 'm_lapangan.*',
+                    (DB::raw('(CASE WHEN m_lapangan.status_lapangan = 1 THEN "Ready" WHEN m_lapangan.status_lapangan = 2 THEN "Perbaikan" ELSE "-" END) as status_lap')))
+                ->get();
+        return view('admin.booking.home', compact('data'));
+    }
+
+    public function getCountDate(Request $request)
+    {
+        $data = Booking::select('m_booking.id_lapangan', 'm_booking.jam_mulai', 'm_booking.jam_berakhir')
+            ->where('m_booking.tgl_booking', $request->tgl_booking)
+            ->where('m_booking.id_lapangan', $request->id_lapangan)
+            ->get();
+
+        if ($data) {
+            return response()->json([
+                'success' => true,
+                'data'    => $data
+            ], 200);
+        }
     }
 }
