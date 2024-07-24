@@ -56,7 +56,7 @@
         var userName = "{{ $userName }}";
         $(document).ready(function() {
             $.ajax({
-                url: "{{ route('pemilikTransaksi') }}",  // URL endpoint dari Laravel
+                url: "{{ route('transaksi') }}",  // URL endpoint dari Laravel
                 method: 'GET',
                 success: function(data) {
                     var tbody = $('#dataTable-1 tbody');

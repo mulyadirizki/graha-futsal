@@ -25,7 +25,7 @@
                                 <div>
                                     <button class="btn btn-info" id="generate-pdf">PDF</button>
                                 </div><br>
-                                <table class="table table-striped table-bordered nowrap" cellspacing="0" width="100%" id="dataTable-1">
+                                <table class="table table-striped table-responsive table-bordered nowrap" cellspacing="0" width="100%" id="dataTable-1">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>No</th>
