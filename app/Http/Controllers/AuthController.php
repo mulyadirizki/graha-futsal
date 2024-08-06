@@ -50,13 +50,15 @@ class AuthController extends Controller
                 User::create([
                     'username'      => $request->username,
                     'password'      => bcrypt($request->password),
+                    'statusenabled' => 0,
                     'roles'         => $request->roles,
                     'id_tuser'      => $id_tuser
                 ]);
             });
             // return response
 
-            return redirect()->route('login')->with('success', 'Registration berhasil. silahkan login!');
+            // return redirect()->route('status-verify/')->with('success', 'Registration berhasil. silahkan login!');
+            return redirect()->route('statusVerify', ['id' => $id_tuser])->with('success', 'Registration berhasil. akun anda akan diverifikasi oleh admin!');
         }catch (\Exception $e) {
             //return JSON process insert failed
             return response()->json([
@@ -64,6 +66,14 @@ class AuthController extends Controller
                 'message' => $e,
             ], 422);
         }
+    }
+
+    public function statusVerify($id) {
+        $user = DB::table('users')
+            ->select('users.*')
+            ->where('id_tuser', $id)
+            ->first();
+        return view('verify', compact('user'));
     }
 
     public function loginPage()
@@ -91,34 +101,39 @@ class AuthController extends Controller
             'password.required' => 'Password tidak boleh kosong'
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return back()->withErrors($validator->errors())->withInput();
         }
 
         $credentials = $request->only('username', 'password');
 
-        if(Auth::attempt($credentials)) {
-            if(auth()->user()->roles === 1) {
-                return redirect('pemilik');
-            } else if(auth()->user()->roles === 2) {
-                return redirect('admin');
-            } else if (auth()->user()->roles === 3) {
-                return redirect()->route('pemain');
+        if (Auth::attempt($credentials)) {
+            if (auth()->user()->statusenabled === 1) {
+                switch (auth()->user()->roles) {
+                    case 1:
+                        return redirect('pemilik');
+                    case 2:
+                        return redirect('admin');
+                    case 3:
+                        return redirect()->route('pemain');
+                    default:
+                        return response()->json([
+                            'message' => 'Akses Ditolak'
+                        ]);
+                }
             } else {
-                return response()->json([
-                    'message' => 'Akses Denied'
+                Auth::logout();
+                return back()->withErrors([
+                    'statusenabled' => 'Akun Anda belum diverifikasi oleh admin',
                 ]);
             }
         }
 
         return back()->withErrors([
-            'password' => 'Username atau Password salah',
+            'credentials' => 'Username atau Password salah',
         ]);
-
-        // return redirect()->route('login')
-        // ->withInput()
-        // ->withErrors(['login_gagal' => 'These credentials do not match our records.']);
     }
+
 
     public function registerPage()
     {

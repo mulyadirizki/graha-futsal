@@ -45,26 +45,37 @@
                             <h3>Fasilitas</h3>
 						</div>
                         <div class="product-info row">
-                            <div class="col-lg-4">
-                                <div class="info_item">
-                                    <i class="lnr lnr-home"></i>
-                                    <p>Toilet</p>
+                            @foreach($fasilitas as $ft)
+                                <div class="col-lg-4">
+                                    @if ($ft->jenis_fasilitas == 1)
+                                    <div class="info_item">
+                                        <i class="fas fa-toilet"></i>
+                                        <p>Toilet</p>
+                                    </div>
+                                    @elseif ($ft->jenis_fasilitas == 2)
+                                    <a href="{{ route('pemainFasilitasDetail', ['id' => $ft->id_mfasilitas]) }}">
+                                        <div class="info_item">
+                                            <i class="fas fa-circle"></i>
+                                            <p>Bola</p>
+                                        </div>
+                                    </a>
                                 </div>
-                                <div class="info_item">
-                                    <i class="lnr lnr-phone-handset"></i>
-                                    <p>Bola</p>
+                                <div class="col-lg-4">
+                                    @elseif ($ft->jenis_fasilitas == 3)
+                                    <a href="{{ route('pemainFasilitasDetail', ['id' => $ft->id_mfasilitas]) }}">
+                                        <div class="info_item">
+                                            <i class="fas fa-tshirt"></i>
+                                            <p>Rompi</p>
+                                        </div>
+                                    </a>
+                                    @elseif ($ft->jenis_fasilitas == 4)
+                                    <div class="info_item">
+                                        <i class="lnr lnr-car"></i>
+                                        <p>Parkir Motor & Mobil</p>
+                                    </div>
+                                    @endif
                                 </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="info_item">
-                                    <i class="lnr lnr-home"></i>
-                                    <p>Rompi</p>
-                                </div>
-                                <div class="info_item">
-                                    <i class="lnr lnr-phone-handset"></i>
-                                    <p>Parkir Motor & Mobil</p>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
 					</div>
 				</div>
@@ -90,46 +101,46 @@
 					<div class="row">
 						<div class="col-lg-12">
                             @foreach($data as $item)
-							<div class="row total_rate">
-								<div class="col-md-4 col-4">
-                                    <img src="https://lh3.googleusercontent.com/p/AF1QipM9ItiQ9M0D5rsMKr-VizgPoV0Teib2d0VYXYBi=s680-w680-h510" class="d-block img-fluid venue-pic" alt="..." style="border-radius: 12px; width: 100%; height: auto; aspect-ratio: 88 / 61; object-fit: cover;">
-								</div>
-								<div class="col-md-3 col-8">
-									<div class="rating_list">
-										<h3>{{ $item->dsc_lapangan }}</h3>
-                                        <p>Mulai dari Rp. {{ number_format($item->harga_lapangan) }} /Jam</p>
-                                        <ul class="blog_meta list">
-                                            <li><a href="#"><i class="lnr lnr-user"></i> Futsal</a></li>
-                                            <li><a href="#"><i class="lnr lnr-calendar-full"></i> Indoor</a></li>
-                                            <li><a href="#"><i class="lnr lnr-eye"></i> {{ $item->tipe_lapangan }}</a></li>
-                                        </ul>
-									</div>
-								</div>
-                                <input type="hidden" id="id_tuser" value="{{ Auth::user()->id_tuser }}">
-                                <div class="col-md-5">
-                                    <form class="row contact_form" method="post" id="contactForm" novalidate="novalidate">
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-sm-4 col-form-label">Jam Main :</label>
-                                            <div class="form-group col-md-8">
-                                                <select id="jam_mulai_{{ $item->id_lapangan }}" name="jam_mulai"  class="form-control">
-                                                    <option disabled selected>Jam Mulai</option>
-
-                                                </select>
-                                            </div>
-                                            <label for="staticEmail" class="col-sm-4 col-form-label">Jam Berakhir :</label>
-                                            <div class="form-group col-md-8">
-                                                <select id="jam_berakhir_{{ $item->id_lapangan }}" name="jam_berakhir" class="form-control">
-                                                    <option>Jam Berakhir</option>
-
-                                                </select>
-                                            </div>
-                                            <div class="col-md-12 text-right">
-                                                <button type="button" onclick="addbooking('{{$item->id_lapangan}}')" class="btn primary-btn">Booking Sekarang</button>
-                                            </div>
+                                <div class="row total_rate">
+                                    <div class="col-md-4 col-4">
+                                        <img src="https://lh3.googleusercontent.com/p/AF1QipM9ItiQ9M0D5rsMKr-VizgPoV0Teib2d0VYXYBi=s680-w680-h510" class="d-block img-fluid venue-pic" alt="..." style="border-radius: 12px; width: 100%; height: auto; aspect-ratio: 88 / 61; object-fit: cover;">
+                                    </div>
+                                    <div class="col-md-3 col-8">
+                                        <div class="rating_list">
+                                            <h3>{{ $item->dsc_lapangan }}</h3>
+                                            <p>Mulai dari Rp. {{ number_format($item->harga_lapangan) }} /Jam</p>
+                                            <ul class="blog_meta list">
+                                                <li><a href="#"><i class="lnr lnr-user"></i> Futsal</a></li>
+                                                <li><a href="#"><i class="lnr lnr-calendar-full"></i> Indoor</a></li>
+                                                <li><a href="#"><i class="lnr lnr-eye"></i> {{ $item->tipe_lapangan }}</a></li>
+                                            </ul>
                                         </div>
-                                    </form>
+                                    </div>
+                                    <input type="hidden" id="id_tuser" value="{{ Auth::user()->id_tuser }}">
+                                    <div class="col-md-5">
+                                        <form class="row contact_form" method="post" id="contactForm_{{ $item->id_lapangan }}" novalidate="novalidate">
+                                            <div class="form-group row">
+                                                <label for="staticEmail" class="col-sm-4 col-form-label">Jam Main :</label>
+                                                <div class="form-group col-md-8">
+                                                    <select id="jam_mulai_{{ $item->id_lapangan }}" name="jam_mulai" class="form-control">
+                                                        <option disabled selected>Jam Mulai</option>
+                                                        <!-- Options should be dynamically populated -->
+                                                    </select>
+                                                </div>
+                                                <label for="staticEmail" class="col-sm-4 col-form-label">Jam Berakhir :</label>
+                                                <div class="form-group col-md-8">
+                                                    <select id="jam_berakhir_{{ $item->id_lapangan }}" name="jam_berakhir" class="form-control">
+                                                        <option disabled selected>Jam Berakhir</option>
+                                                        <!-- Options should be dynamically populated -->
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-12 text-right">
+                                                    <button type="button" onclick="addbooking('{{ $item->id_lapangan }}')" class="btn primary-btn">Booking Sekarang</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-							</div>
                             @endforeach
 						</div>
 					</div>

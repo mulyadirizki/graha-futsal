@@ -25,6 +25,21 @@
                                 <div>
                                     <button class="btn btn-info" id="generate-pdf">PDF</button>
                                 </div><br>
+                                <div class="row row-cols-md-auto g-2 align-items-center">
+                                    <div class="col-3">
+                                        <label for="awaltgl">Periode </label>
+                                        <input type="date" class="form-control form-control-sm" id="tgl_booking">
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="akhirtgl">- Booking</label>
+                                        <input type="date" class="form-control form-control-sm" id="tgl_bookingAkhir">
+                                    </div>
+                                    <div class="col-2">
+                                        <label class="form-label">&nbsp;</label>
+                                        <button type="submit" class="btn btn-primary btn-cari btn-sm form-control">Search</button>
+                                    </div>
+                                </div>
+                                <br>
                                 <table class="table table-striped table-responsive table-bordered nowrap" cellspacing="0" width="100%" id="dataTable-1">
                                     <thead class="thead-dark">
                                         <tr>
@@ -57,36 +72,94 @@
     <script>
         var userName = "{{ $userName }}";
         $(document).ready(function() {
-            $.ajax({
-                url: "{{ route('booking') }}",  // URL endpoint dari Laravel
-                method: 'GET',
-                success: function(data) {
-                    var tbody = $('#dataTable-1 tbody');
-                    var no = 1;
-                    data.forEach(function(item, index) {
-                        var statusBayar = item.id_transaksi ? '<span class="badge badge-success">Sudah Bayar</span>' : '<span class="badge badge-warning">Belum Bayar</span>';
-                        var row = `<tr>
-                            <td>${no++}</td>
-                            <td>${item.nama}</td>
-                            <td>${item.dsc_lapangan}</td>
-                            <td>Rp. ${number_format(item.harga_lapangan)} /Jam</td>
-                            <td>${item.tgl_booking}</td>
-                            <td>${substr(item.jam_mulai, 0, 5)} WIB</td>
-                            <td>${substr(item.jam_berakhir, 0, 5)} WIB</td>
-                            <td>${substr(item.diff, 0, 2)} Jam</td>
-                            <td>Rp. ${number_format(item.total_biaya)}</td>
-                            <td>${statusBayar}</td>
-                        </tr>`;
-                        tbody.append(row);
-                    });
+            function load() {
 
-                    // Inisialisasi DataTables setelah data dimuat
-                    $('#dataTable-1').DataTable();
-                },
-                error: function(error) {
-                    console.error("Error fetching data", error);
-                }
-            });
+                let today = new Date();
+
+                let year = today.getFullYear();
+                let month = (today.getMonth() + 1).toString().padStart(2, '0');
+                let day = today.getDate().toString().padStart(2, '0');
+
+                let formattedDate = `${year}-${month}-${day}`;
+
+                let tgl_booking = year + '-' + month + '-' + day;
+                $('#tgl_booking').val(tgl_booking);
+
+                let tgl_bookingAkhir = year + '-' + month + '-' + day ;
+                $('#tgl_bookingAkhir').val(tgl_bookingAkhir);
+
+                var listQuery = {
+                    page: 1,
+                    limit: 2000,
+                    sort: '+nama',
+                    tgl_booking: tgl_booking,
+                    tgl_bookingAkhir: tgl_bookingAkhir
+                };
+
+                let table = $('#dataTable-1').DataTable({
+                    ajax: {
+                        url: "{{ route('booking') }}",
+                        method: 'GET',
+                        data: listQuery,
+                        dataSrc: function (json) {
+                            return json;
+                        },
+                        error: function (error) {
+                            console.error("Error fetching data", error);
+                        }
+                    },
+                    columns: [
+                        { data: null, render: function (data, type, row, meta) { return meta.row + 1; } },
+                        { data: 'nama' },
+                        { data: 'dsc_lapangan' },
+                        { data: 'harga_lapangan', render: function (data) { return `Rp. ${number_format(data)} /Jam`; } },
+                        { data: 'tgl_booking' },
+                        { data: 'jam_mulai', render: function (data) { return substr(data, 0, 5) + ' WIB'; } },
+                        { data: 'jam_berakhir', render: function (data) { return substr(data, 0, 5) + ' WIB'; } },
+                        { data: 'diff', render: function (data) { return substr(data, 0, 2) + ' Jam'; } },
+                        { data: 'total_biaya', render: function (data) { return `Rp. ${number_format(data)}`; } },
+                        { data: 'id_transaksi', render: function (data) { return data ? '<span class="badge badge-success">Sudah Bayar</span>' : '<span class="badge badge-warning">Belum Bayar</span>'; } }
+                    ],
+                    destroy: true
+                });
+
+                $('.btn-cari').click(function (e) {
+                    e.preventDefault();
+
+                    var tgl_booking = $('#tgl_booking').val();
+                    var tgl_bookingAkhir = $('#tgl_bookingAkhir').val();
+
+                    listQuery.tgl_booking = tgl_booking;
+                    listQuery.tgl_bookingAkhir = tgl_bookingAkhir;
+
+                    let table2 = $('#dataTable-1').DataTable({
+                        ajax: {
+                            url: "{{ route('booking') }}",
+                            method: 'GET',
+                            data: listQuery,
+                            dataSrc: function (json) {
+                                return json;
+                            },
+                            error: function (error) {
+                                console.error("Error fetching data", error);
+                            }
+                        },
+                        columns: [
+                            { data: null, render: function (data, type, row, meta) { return meta.row + 1; } },
+                            { data: 'nama' },
+                            { data: 'dsc_lapangan' },
+                            { data: 'harga_lapangan', render: function (data) { return `Rp. ${number_format(data)} /Jam`; } },
+                            { data: 'tgl_booking' },
+                            { data: 'jam_mulai', render: function (data) { return substr(data, 0, 5) + ' WIB'; } },
+                            { data: 'jam_berakhir', render: function (data) { return substr(data, 0, 5) + ' WIB'; } },
+                            { data: 'diff', render: function (data) { return substr(data, 0, 2) + ' Jam'; } },
+                            { data: 'total_biaya', render: function (data) { return `Rp. ${number_format(data)}`; } },
+                            { data: 'id_transaksi', render: function (data) { return data ? '<span class="badge badge-success">Sudah Bayar</span>' : '<span class="badge badge-warning">Belum Bayar</span>'; } }
+                        ],
+                        destroy: true
+                    });
+                })
+            }
 
             function number_format(number, decimals, dec_point, thousands_sep) {
                 number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
@@ -171,6 +244,8 @@
                     doc.save("Laporan_Booking.pdf");
                 };
             });
+
+            load();
         });
     </script>
 @endpush

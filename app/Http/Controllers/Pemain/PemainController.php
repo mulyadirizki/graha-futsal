@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Fasilitas;
 use App\Models\Lapangan;
 use App\Models\Transaksi;
+use App\Models\M_fasilitas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -94,8 +95,22 @@ class PemainController extends Controller
             ->select('t_fasilitas.dsc_fasilitas', 'm_lapangan.*',
                 (DB::raw('(CASE WHEN m_lapangan.status_lapangan = 1 THEN "Ready" WHEN m_lapangan.status_lapangan = 2 THEN "Perbaikan" ELSE "-" END) as status_lap')))
             ->get();
+
+        $fasilitas = M_fasilitas::select('*')->get();
         // return response($data);exit;
-        return view('pemain.booking', compact('data'));
+        return view('pemain.booking', compact('data', 'fasilitas'));
+    }
+
+    public function pemainFasilitasDetail($id_mfasilitas) {
+        $fasilitas = M_fasilitas::select(
+                'm_fasilitas.id_mfasilitas',
+                'm_fasilitas.jenis_fasilitas',
+                (DB::raw('(CASE WHEN m_fasilitas.jenis_fasilitas = 1 THEN "Toilet" WHEN m_fasilitas.jenis_fasilitas = 2 THEN "Bola" WHEN m_fasilitas.jenis_fasilitas = 3 THEN "Rompi" WHEN m_fasilitas.jenis_fasilitas = 4 THEN "Area Parkir" ELSE "-" END) as title_fasilitas')),
+                'm_fasilitas.desc_fasilitas'
+            )
+            ->where('m_fasilitas.id_mfasilitas', $id_mfasilitas)
+            ->first();
+        return view('pemain.fasilitas', compact('fasilitas'));
     }
 
     public function pemainBookingDate()
@@ -122,5 +137,18 @@ class PemainController extends Controller
             ->first();
         $dataRekening = Transaksi::select('m_transaksi.*')->first();
         return view('pemain.pembayaran.konfirmasiPembayaran', compact('dataBooking', 'dataRekening'));
+    }
+
+    public function pemainPembayaranBukti($id_booking) {
+
+        $dataBooking = Booking::select('m_booking.id_booking', 'm_booking.id_tuser', 'm_lapangan.dsc_lapangan', 'm_lapangan.tipe_lapangan', 'm_booking.tgl_booking',
+                'm_booking.jam_mulai', 'm_booking.jam_berakhir', (DB::raw('TIMEDIFF(m_booking.jam_berakhir, m_booking.jam_mulai) as lama_main')), 'm_lapangan.harga_lapangan', 'm_booking.total_biaya')
+            ->leftJoin('m_lapangan', 'm_booking.id_lapangan', '=', 'm_lapangan.id_lapangan')
+            ->where('m_booking.id_booking', $id_booking)
+            ->first();
+        $dataRekening = Transaksi::select('m_transaksi.*')->first();
+
+        $dataTransaksi = DB::table('t_transaksi')->select('*')->where('t_transaksi.id_booking', $id_booking)->first();
+        return view('pemain.pembayaran.buktiPembayaran', compact('dataBooking', 'dataRekening', 'dataTransaksi'));
     }
 }

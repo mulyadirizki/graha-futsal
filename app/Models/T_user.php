@@ -22,4 +22,8 @@ class T_user extends Model
         'email',
         'alamat'
     ];
+
+    protected $casts = [
+        'id_tuser' => 'string',
+    ];
 }

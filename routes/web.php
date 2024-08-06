@@ -8,12 +8,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdLapanganController;
 use App\Http\Controllers\Admin\AdTransaksiController;
+use App\Http\Controllers\Admin\AdFasilitasController;
 
 // Controller Pemain
-use App\http\Controllers\Pemain\PemainController;
+use App\Http\Controllers\Pemain\PemainController;
 
 // Controller Pemain
-use App\http\Controllers\Pemilik\PemilikController;
+use App\Http\Controllers\Pemilik\PemilikController;
 use App\Http\Controllers\Pemain\PeBookingController;
 use App\Http\Controllers\Pemain\PePembayaranController;
 
@@ -37,6 +38,7 @@ Auth::routes();
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/daftar', [AuthController::class, 'registerPage'])->name('register');
 Route::post('daftar', [AuthController::class, 'registerStore'])->name('daftar');
+Route::get('/status-verify/{id}', [AuthController::class, 'statusVerify'])->name('statusVerify');
 Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
 Route::post('login', [AuthController::class, 'loginStore'])->name('loginStore');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
@@ -69,6 +71,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'isAdmin'], function() {
     Route::put('/transaksi/update', [AdTransaksiController::class, 'transaksiUpdate'])->name('transaksiUpdate');
     Route::delete('/transaksi/delete/{id_mtransaksi}', [AdTransaksiController::class, 'transaksiDelete'])->name('transaksiDelete');
 
+    // lapangan
+    Route::get('/fasilitas', [AdFasilitasController::class, 'index'])->name('fasilitas');
+    Route::get('/fasilitas/create', [AdFasilitasController::class, 'fasilitasCreatePage'])->name('fasilitasCreatePage');
+    Route::post('/fasilitas/create', [AdFasilitasController::class, 'fasilitasAdd'])->name('fasilitasAdd');
+    Route::get('/fasilitas/update/{id_mfasilitas}', [AdFasilitasController::class, 'fasilitasUpdatePage'])->name('fasilitasUpdatePage');
+    Route::put('/fasilitas/update', [AdFasilitasController::class, 'fasilitasUpdate'])->name('fasilitasUpdate');
+    Route::delete('/fasilitas/delete/{id_mfasilitas}', [AdFasilitasController::class, 'fasilitasDelete'])->name('fasilitasDelete');
+
+    Route::get('/pemain/new-register', [AdminController::class, 'pemainAdminNew'])->name('pemainAdminNew');
+    Route::post('/verify-user/{id}', [AdminController::class, 'verifyUser'])->name('verifyUser');
     Route::get('/pemain', [AdminController::class, 'pemainPage'])->name('pemainAdmin');
     Route::get('/booking', [AdminController::class, 'bookingPage'])->name('booking');
     Route::get('/transaksi', [AdminController::class, 'transaksiPage'])->name('transaksi');
@@ -81,10 +93,12 @@ Route::group(['prefix' => 'id/u/pemain', 'middleware' => 'isPemain'], function()
     Route::get('/', [PemainController::class, 'pemainPage'])->name('pemain');
 
     Route::get('/booking', [PemainController::class, 'pemainBookingDetail'])->name('pemainBookingDetail');
+    Route::get('/detail-fasilitas/{id}', [PemainController::class, 'pemainFasilitasDetail'])->name('pemainFasilitasDetail');
     Route::get('/booking/store/{id_lapangan}', [PemainController::class, 'pemainBookingDate'])->name('pemainBookingDate');
     Route::post('/booking/create', [PeBookingController::class, 'bookingAdd'])->name('bookingAdd');
 
     Route::get('/pembayaran', [PemainController::class, 'pemainPembayaranBooking'])->name('pemainPembayaranBooking');
     Route::get('/pembayaran-konfirmasi/{id_booking}', [PemainController::class, 'pemainPembayaranKonfirmasi'])->name('pemainPembayaranKonfirmasi');
     Route::post('/pembayaran/create', [PePembayaranController::class, 'pembayarangAdd'])->name('pembayarangAdd');
+    Route::get('/pembayaran-bukti/{id_booking}', [PemainController::class, 'pemainPembayaranBukti'])->name('pemainPembayaranBukti');
 });

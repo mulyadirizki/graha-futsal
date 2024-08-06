@@ -78,7 +78,7 @@
                                         <?php if(empty($value->id_transaksi)) { ?>
                                             <a href="{{ route('pemainPembayaranKonfirmasi', $value->id_booking) }}"><button class="btn btn-sm btn-primary">Bayar</button></a>
                                         <?php } else { ?>
-                                            <button class="btn btn-sm btn-primary" disabled>Bayar</button>
+                                            <a href="{{ route('pemainPembayaranBukti', $value->id_booking) }}"><button class="btn btn-sm btn-success">View Bukti Bayar</button></a>
                                         <?php } ?>
                                     </td>
                                 </tr>

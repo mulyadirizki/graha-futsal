@@ -25,6 +25,21 @@
                                 <div>
                                     <button class="btn btn-info" id="generate-pdf">PDF</button>
                                 </div><br>
+                                <div class="row row-cols-md-auto g-2 align-items-center">
+                                    <div class="col-3">
+                                        <label for="awaltgl">Periode </label>
+                                        <input type="date" class="form-control form-control-sm" id="created_at">
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="akhirtgl">- Tanggal Registrasi</label>
+                                        <input type="date" class="form-control form-control-sm" id="created_atAkhir">
+                                    </div>
+                                    <div class="col-2">
+                                        <label class="form-label">&nbsp;</label>
+                                        <button type="submit" class="btn btn-primary btn-cari btn-sm form-control">Search</button>
+                                    </div>
+                                </div>
+                                <br>
                                 <table class="table table-striped table-bordered nowrap" id="dataTable-1">
                                     <thead class="thead-dark">
                                         <tr>
@@ -35,6 +50,7 @@
                                             <th>No HP</th>
                                             <th>Email</th>
                                             <th>Alamat</th>
+                                            <th>Tgl Daftar</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -54,32 +70,90 @@
     <script>
         var userName = "{{ $userName }}";
         $(document).ready(function() {
-            $.ajax({
-                url: "{{ route('pemainAdmin') }}",  // URL endpoint dari Laravel
-                method: 'GET',
-                success: function(data) {
-                    var tbody = $('#dataTable-1 tbody');
-                    var no = 1;
-                    data.forEach(function(user) {
-                        var row = `<tr>
-                            <td>${no++}</td>
-                            <td>${user.nama}</td>
-                            <td>${user.tgl_lahir}</td>
-                            <td>${user.jkel}</td>
-                            <td>${user.no_hp}</td>
-                            <td>${user.email}</td>
-                            <td>${user.alamat}</td>
-                        </tr>`;
-                        tbody.append(row);
-                    });
+            function load() {
 
-                    // Inisialisasi DataTables setelah data dimuat
-                    $('#dataTable-1').DataTable();
-                },
-                error: function(error) {
-                    console.error("Error fetching data", error);
-                }
-            });
+                let today = new Date();
+
+                let year = today.getFullYear();
+                let month = (today.getMonth() + 1).toString().padStart(2, '0');
+                let day = today.getDate().toString().padStart(2, '0');
+
+                let formattedDate = `${year}-${month}-${day}`;
+
+                let created_at = year + '-' + month + '-' + day;
+                $('#created_at').val(created_at);
+
+                let created_atAkhir = year + '-' + month + '-' + day ;
+                $('#created_atAkhir').val(created_atAkhir);
+
+                var listQuery = {
+                    page: 1,
+                    limit: 2000,
+                    sort: '+nama',
+                    created_at: created_at,
+                    created_atAkhir: created_atAkhir
+                };
+
+                let table = $('#dataTable-1').DataTable({
+                    ajax: {
+                        url: "{{ route('pemainAdmin') }}",
+                        method: 'GET',
+                        data: listQuery,
+                        dataSrc: function (json) {
+                            return json;
+                        },
+                        error: function (error) {
+                            console.error("Error fetching data", error);
+                        }
+                    },
+                    columns: [
+                        { data: null, render: function (data, type, row, meta) { return meta.row + 1; } },
+                        { data: 'nama' },
+                        { data: 'tgl_lahir' },
+                        { data: 'jkel' },
+                        { data: 'no_hp' },
+                        { data: 'email' },
+                        { data: 'alamat' },
+                        { data: 'formatted_created_at' },
+                    ],
+                    destroy: true
+                });
+
+                $('.btn-cari').click(function (e) {
+                    e.preventDefault();
+
+                    var created_at = $('#created_at').val();
+                    var created_atAkhir = $('#created_atAkhir').val();
+
+                    listQuery.created_at = created_at;
+                    listQuery.created_atAkhir = created_atAkhir;
+
+                    let table2 = $('#dataTable-1').DataTable({
+                        ajax: {
+                            url: "{{ route('pemainAdmin') }}",
+                            method: 'GET',
+                            data: listQuery,
+                            dataSrc: function (json) {
+                                return json;
+                            },
+                            error: function (error) {
+                                console.error("Error fetching data", error);
+                            }
+                        },
+                        columns: [
+                            { data: null, render: function (data, type, row, meta) { return meta.row + 1; } },
+                            { data: 'nama' },
+                            { data: 'tgl_lahir' },
+                            { data: 'jkel' },
+                            { data: 'no_hp' },
+                            { data: 'email' },
+                            { data: 'alamat' },
+                            { data: 'formatted_created_at' },
+                        ],
+                        destroy: true
+                    });
+                })
+            }
 
             $('#generate-pdf').click(function() {
                 const { jsPDF } = window.jspdf;
@@ -138,6 +212,8 @@
                     doc.save("Laporan_Registrasi.pdf");
                 };
             });
+
+            load();
         });
     </script>
 @endpush

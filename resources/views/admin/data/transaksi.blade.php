@@ -25,6 +25,21 @@
                                 <div>
                                     <button class="btn btn-info" id="generate-pdf">PDF</button>
                                 </div><br>
+                                <div class="row row-cols-md-auto g-2 align-items-center">
+                                    <div class="col-3">
+                                        <label for="awaltgl">Periode </label>
+                                        <input type="date" class="form-control form-control-sm" id="tgl_transaksi">
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="akhirtgl">- Tanggal Pembayaran</label>
+                                        <input type="date" class="form-control form-control-sm" id="tgl_transaksiAkhir">
+                                    </div>
+                                    <div class="col-2">
+                                        <label class="form-label">&nbsp;</label>
+                                        <button type="submit" class="btn btn-primary btn-cari btn-sm form-control">Search</button>
+                                    </div>
+                                </div>
+                                <br>
                                 <table class="table table-striped table-bordered nowrap" id="dataTable-1">
                                     <thead class="thead-dark">
                                         <tr>
@@ -55,32 +70,103 @@
     <script>
         var userName = "{{ $userName }}";
         $(document).ready(function() {
-            $.ajax({
-                url: "{{ route('transaksi') }}",  // URL endpoint dari Laravel
-                method: 'GET',
-                success: function(data) {
-                    var tbody = $('#dataTable-1 tbody');
-                    var no = 1;
-                    data.forEach(function(user) {
-                        var row = `<tr>
-                            <td>${no++}</td>
-                            <td>${user.nama}</td>
-                            <td>${user.id_booking}</td>
-                            <td>${user.jenis_bank}</td>
-                            <td>${user.no_rek}</td>
-                            <td>${user.tgl_transaksi}</td>
-                            <td><img src="{{ url('storage/img/pembayaran') }}/${user.bukti_transaksi}" alt="" style="width: 200px; height: 150px"></td>
-                        </tr>`;
-                        tbody.append(row);
-                    });
 
-                    // Inisialisasi DataTables setelah data dimuat
-                    $('#dataTable-1').DataTable();
-                },
-                error: function(error) {
-                    console.error("Error fetching data", error);
-                }
-            });
+            function load() {
+
+                let today = new Date();
+
+                let year = today.getFullYear();
+                let month = (today.getMonth() + 1).toString().padStart(2, '0');
+                let day = today.getDate().toString().padStart(2, '0');
+
+                let formattedDate = `${year}-${month}-${day}`;
+
+                let tgl_transaksi = year + '-' + month + '-' + day;
+                $('#tgl_transaksi').val(tgl_transaksi);
+
+                let tgl_transaksiAkhir = year + '-' + month + '-' + day ;
+                $('#tgl_transaksiAkhir').val(tgl_transaksiAkhir);
+
+                var listQuery = {
+                    page: 1,
+                    limit: 2000,
+                    sort: '+nama',
+                    tgl_transaksi: tgl_transaksi,
+                    tgl_transaksiAkhir: tgl_transaksiAkhir
+                };
+
+                let table = $('#dataTable-1').DataTable({
+                    ajax: {
+                        url: "{{ route('transaksi') }}",
+                        method: 'GET',
+                        data: listQuery,
+                        dataSrc: function (json) {
+                            return json;
+                        },
+                        error: function (error) {
+                            console.error("Error fetching data", error);
+                        }
+                    },
+                    columns: [
+                        { data: null, render: function (data, type, row, meta) { return meta.row + 1; } },
+                        { data: 'nama' },
+                        { data: 'id_booking' },
+                        { data: 'jenis_bank' },
+                        { data: 'no_rek' },
+                        { data: 'tgl_transaksi' },
+                        {
+                            data: 'bukti_transaksi',
+                            render: function (data, type, row) {
+                                // Membuat URL gambar dengan menggunakan data bukti_transaksi
+                                var imgSrc = `{{ url('storage/img/pembayaran') }}/${data}`;
+                                return `<img src="${imgSrc}" alt="Bukti Transaksi" style="width: 200px; height: 150px">`;
+                            }
+                        }
+                    ],
+                    destroy: true
+                });
+
+                $('.btn-cari').click(function (e) {
+                    e.preventDefault();
+
+                    var tgl_transaksi = $('#tgl_transaksi').val();
+                    var tgl_transaksiAkhir = $('#tgl_transaksiAkhir').val();
+
+                    listQuery.tgl_transaksi = tgl_transaksi;
+                    listQuery.tgl_transaksiAkhir = tgl_transaksiAkhir;
+
+                    let table2 = $('#dataTable-1').DataTable({
+                        ajax: {
+                            url: "{{ route('transaksi') }}",
+                            method: 'GET',
+                            data: listQuery,
+                            dataSrc: function (json) {
+                                return json;
+                            },
+                            error: function (error) {
+                                console.error("Error fetching data", error);
+                            }
+                        },
+                        columns: [
+                            { data: null, render: function (data, type, row, meta) { return meta.row + 1; } },
+                            { data: 'nama' },
+                            { data: 'id_booking' },
+                            { data: 'jenis_bank' },
+                            { data: 'no_rek' },
+                            { data: 'tgl_transaksi' },
+                            {
+                                data: 'bukti_transaksi',
+                                render: function (data, type, row) {
+                                    // Membuat URL gambar dengan menggunakan data bukti_transaksi
+                                    var imgSrc = `{{ url('storage/img/pembayaran') }}/${data}`;
+                                    return `<img src="${imgSrc}" alt="Bukti Transaksi" style="width: 200px; height: 150px">`;
+                                }
+                            }
+                        ],
+                        destroy: true
+                    });
+                })
+            }
 
             $('#generate-pdf').click(function() {
                 const { jsPDF } = window.jspdf;
@@ -152,6 +238,8 @@
                     doc.save("Laporan_Transaksi.pdf");
                 };
             });
+
+            load();
         });
     </script>
 @endpush

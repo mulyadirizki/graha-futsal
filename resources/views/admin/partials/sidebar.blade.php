@@ -39,11 +39,23 @@
           <span class="ml-3 item-text">Data Rekening</span>
         </a>
       </li>
+      <li class="nav-item w-100">
+        <a class="nav-link" href="{{ route('fasilitas') }}">
+          <i class="fe fe-layers fe-16"></i>
+          <span class="ml-3 item-text">Data Fasilitas</span>
+        </a>
+      </li>
     </ul>
     <p class="text-muted nav-heading mt-4 mb-1">
       <span>Info Data</span>
     </p>
     <ul class="navbar-nav flex-fill w-100 mb-2">
+      <li class="nav-item w-100">
+        <a class="nav-link" href="{{ route('pemainAdminNew') }}">
+          <i class="fe fe-calendar fe-16"></i>
+          <span class="ml-3 item-text">Data Pemain Baru</span>
+        </a>
+      </li>
       <li class="nav-item w-100">
         <a class="nav-link" href="{{ route('pemainAdmin') }}">
           <i class="fe fe-calendar fe-16"></i>
